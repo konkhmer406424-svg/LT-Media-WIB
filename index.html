@@ -34,7 +34,7 @@
 }
 *{box-sizing:border-box;}
 body{margin:0;background:var(--b-bg);color:var(--b-ink);font-family:'Kantumruy Pro',sans-serif;}
-.app{display:grid;grid-template-columns:360px 6px 1fr;height:100vh;}
+.app{display:grid;grid-template-columns:360px 6px 1fr;height:100vh;height:100dvh;}
 .resizer{background:var(--b-line);cursor:col-resize;position:relative;}
 .resizer:hover,.resizer.active{background:var(--b-accent);}
 .resizer::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:3px;height:36px;border-radius:2px;background:var(--b-panel);}
@@ -63,19 +63,19 @@ input[type=text],input[type=date],input[type=time],textarea{
 }
 textarea{resize:vertical;min-height:64px;}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.style-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:26px;}
+.style-row{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:26px;}
 .style-col{margin-bottom:0;}
 .style-col legend{margin-bottom:10px;}
-.theme-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;}
-.theme-card{border:2px solid var(--b-line);border-radius:7px;padding:4px;cursor:pointer;text-align:center;}
+.theme-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;}
+.theme-card{border:2px solid var(--b-line);border-radius:6px;padding:3px 2px;cursor:pointer;text-align:center;min-width:0;}
 .theme-card.active{border-color:var(--b-accent);}
-.theme-swatch{height:20px;border-radius:4px;margin-bottom:3px;}
-.theme-card span{font-size:9.5px;line-height:1.2;display:block;}
-.effect-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
-.effect-card{border:2px solid var(--b-line);border-radius:7px;padding:5px 3px;cursor:pointer;text-align:center;}
-.effect-card.active{border-color:var(--b-accent);}
-.effect-icon{font-size:14px;margin-bottom:2px;line-height:1;}
-.effect-card span{font-size:9.5px;display:block;line-height:1.2;}
+.theme-swatch{height:14px;border-radius:3px;margin-bottom:2px;}
+.theme-card span{font-size:9px;line-height:1.3;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.add-btn:disabled{opacity:.6;cursor:wait;}
+.cs-icon{height:20px;display:flex;align-items:center;justify-content:center;color:var(--b-accent);margin-bottom:2px;}
+.cs-icon svg{width:18px;height:18px;}
+.chk-row{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--b-sub);margin:10px 0 0;cursor:pointer;}
+.chk-row input{margin-top:3px;}
 .template-row{display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;}
 .template-chip{border:1px solid var(--b-line);background:var(--b-bg);color:var(--b-sub);font-size:11.5px;padding:5px 10px;border-radius:999px;cursor:pointer;}
 .template-chip:hover{border-color:var(--b-accent);color:var(--b-accent);}
@@ -98,7 +98,7 @@ textarea{resize:vertical;min-height:64px;}
 .add-btn{width:100%;padding:9px;border:1px dashed var(--b-line);border-radius:6px;background:none;color:var(--b-sub);font-size:13px;cursor:pointer;margin-top:2px;}
 .profile-btn-row{display:flex;gap:6px;margin-top:8px;}
 .profile-btn-row .add-btn{width:auto;flex:1;margin-top:0;font-size:12px;padding:8px 6px;}
-#profileFieldset select{width:100%;padding:8px 10px;border:1px solid var(--b-line);border-radius:6px;background:var(--b-bg);color:var(--b-ink);font-size:13px;}
+#profileFieldset select,#musicMaxSel{width:100%;padding:8px 10px;border:1px solid var(--b-line);border-radius:6px;background:var(--b-bg);color:var(--b-ink);font-size:13px;}
 .photo-hint{font-size:12px;color:var(--b-sub);margin:-8px 0 12px;}
 .photo-grid{display:flex;flex-direction:column;gap:6px;}
 .photo-file-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--b-line);border-radius:6px;background:var(--b-bg);}
@@ -109,7 +109,7 @@ textarea{resize:vertical;min-height:64px;}
 .guest-empty-hint{font-size:12.5px;color:var(--b-sub);text-align:center;padding:10px 0 0;margin:0;}
 .photo-add-row input{position:absolute;inset:0;opacity:0;cursor:pointer;}
 .photo-clear{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:4px;width:20px;height:20px;font-size:12px;cursor:pointer;z-index:2;}
-.preview-col{display:flex;flex-direction:column;height:100vh;}
+.preview-col{display:flex;flex-direction:column;height:100vh;height:100dvh;}
 .toolbar{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--b-line);gap:12px;flex-wrap:wrap;}
 .toolbar-title{font-size:13.5px;color:var(--b-sub);}
 .btn{padding:10px 20px;border-radius:999px;border:none;font-size:13.5px;cursor:pointer;font-weight:600;}
@@ -183,6 +183,11 @@ iframe{width:100%;max-width:820px;height:100%;border:1px solid var(--b-line);bor
         <button class="add-btn" id="profileSaveAsBtn" type="button">រក្សាទុកជាថ្មី...</button>
         <button class="access-btn" id="profileDeleteBtn" type="button">លុប</button>
       </div>
+      <div class="profile-btn-row">
+        <button class="access-btn" id="profileExportBtn" type="button">នាំចេញ (Export) .json</button>
+        <button class="access-btn" id="profileImportBtn" type="button">នាំចូល (Import) .json</button>
+        <input type="file" id="profileImportFile" accept="application/json" style="display:none;">
+      </div>
       <p class="guest-empty-hint" id="profileStatus"></p>
     </fieldset>
 
@@ -190,13 +195,11 @@ iframe{width:100%;max-width:820px;height:100%;border:1px solid var(--b-line);bor
       <fieldset class="style-col">
         <legend>ទម្រង់</legend>
         <div class="theme-grid" id="themeGrid"></div>
-        <button class="add-btn" id="themePreviewBtn" type="button" style="margin-top:10px;">ទាញយកគំរូគ្រប់ទម្រង់ (ឲ្យភ្ញៀវជ្រើសរើស)</button>
-        <p class="guest-empty-hint" id="themePreviewStatus"></p>
       </fieldset>
-
       <fieldset class="style-col">
-        <legend>បែបផែនចលនា</legend>
-        <div class="effect-grid" id="effectGrid"></div>
+        <legend>ស្ទីលអេក្រង់បើកធៀប</legend>
+        <div class="theme-grid" id="coverStyleGrid"></div>
+        <label class="chk-row"><input type="checkbox" id="coverAlways"><span>បង្ហាញអេក្រង់បើកធៀប ទោះមិនមានចម្រៀងក៏ដោយ (បើមានចម្រៀង អេក្រង់នេះបង្ហាញជានិច្ច)</span></label>
       </fieldset>
     </div>
 
@@ -292,8 +295,43 @@ iframe{width:100%;max-width:820px;height:100%;border:1px solid var(--b-line);bor
     </fieldset>
 
     <fieldset>
+      <legend>ចម្រៀង (Music)</legend>
+      <p class="photo-hint">ភ្ញៀវនឹងឃើញអេក្រង់ «ចុចដើម្បីបើកធៀបអញ្ជើញ» ជាមុន ហើយចម្រៀងចាប់ផ្តើមលេងពេលចុច (browser មិនអនុញ្ញាតឱ្យលេងសំឡេងដោយខ្លួនឯងទេ)។ ភ្ញៀវអាចបិទ/បើកបានពីប៊ូតុងខាងក្រោមស្តាំ។</p>
+      <p class="photo-hint">ជ្រើសរើស MP3 ប៉ុន្មានធំក៏បាន — ប្រព័ន្ធ<b>កាត់ចម្រៀងឱ្យខ្លីស្វ័យប្រវត្តិ</b> (ចាប់ពីដើម) ហើយលុបរូបភាព/ព័ត៌មានក្នុងឯកសារ MP3 ចេញ ដើម្បីកុំឱ្យឯកសារភ្ញៀវធំ។ ចម្រៀងត្រូវបានដាក់ចូលក្នុងឯកសារភ្ញៀវនីមួយៗ។</p>
+      <div class="field">
+        <label for="musicMaxSel">រយៈពេលអតិបរមានៃចម្រៀង</label>
+        <select id="musicMaxSel">
+          <option value="30">30 វិនាទី</option>
+          <option value="45">45 វិនាទី</option>
+          <option value="60" selected>60 វិនាទី</option>
+          <option value="90">90 វិនាទី</option>
+          <option value="120">120 វិនាទី</option>
+          <option value="0">មិនកំណត់ (កាត់តែពេលធំលើស 2 MB)</option>
+        </select>
+      </div>
+      <input type="file" id="musicFile" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg" style="display:none;">
+      <div class="profile-btn-row">
+        <button class="add-btn" id="musicPickBtn" type="button">ជ្រើសរើសចម្រៀង (MP3)</button>
+        <button class="access-btn" id="musicRemoveBtn" type="button" style="display:none;">លុបចម្រៀង</button>
+      </div>
+      <audio id="musicPreview" controls preload="none" style="width:100%;margin-top:10px;display:none;"></audio>
+      <div class="field" id="musicStartField" style="display:none;margin-top:12px;">
+        <label for="musicStartRange">ចាប់ផ្តើមចម្រៀងពី (ទាញ រួចស្តាប់សាកល្បងខាងលើ)</label>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="range" id="musicStartRange" min="0" max="0" step="1" value="0" style="flex:1;min-width:0;">
+          <input type="text" id="musicStartTxt" inputmode="numeric" placeholder="0:00" aria-label="Start time" style="width:74px;text-align:center;">
+        </div>
+        <div class="profile-btn-row">
+          <button class="access-btn" id="musicStartBeginBtn" type="button">ពីដើមបទ</button>
+          <button class="access-btn" id="musicStartEndBtn" type="button">ពីចុងបទ</button>
+        </div>
+      </div>
+      <p class="guest-empty-hint" id="musicStatus"></p>
+    </fieldset>
+
+    <fieldset>
       <legend>ធៀបអញ្ជើញផ្ទាល់ខ្លួនសម្រាប់ភ្ញៀវ (Guest Copies)</legend>
-      <p class="photo-hint" style="margin:-4px 0 12px;line-height:1.7;">ទាញយកបានច្រើនបំផុត <b>៣០ នាក់ក្នុងមួយដង</b>។ បើមានភ្ញៀវលើសពី ៣០ នាក់ សូមបែងចែកជាក្រុមៗ៖ ទាញយកក្រុមទី ១ (៣០ នាក់ដំបូង) រួចលុបឈ្មោះទាំងនោះចេញ ហើយបិទភ្ជាប់ក្រុមបន្ទាប់ដើម្បីទាញយកម្តងទៀត។</p>
+      <p class="photo-hint" style="margin:-4px 0 12px;line-height:1.7;">ដាក់ឈ្មោះភ្ញៀវប៉ុន្មានក៏បាន — ប្រព័ន្ធនឹង<b>ចែកជាក្រុម ៣០ នាក់ដោយស្វ័យប្រវត្តិ</b> ហើយទាញយក ZIP ម្តងមួយក្រុមជាប់ៗគ្នា។ បើ browser សួរអំពីការទាញយកច្រើនឯកសារ សូមចុច «អនុញ្ញាត» (Allow)។</p>
       <div class="field"><label>បញ្ជីឈ្មោះភ្ញៀវ (មួយបន្ទាត់ម្នាក់)</label>
         <textarea id="guestNamesFile" style="min-height:110px;" placeholder="ចាន់ សុវណ្ណា
 សុខ ស្រីពៅ
@@ -318,9 +356,9 @@ iframe{width:100%;max-width:820px;height:100%;border:1px solid var(--b-line);bor
 
 <script>
 const THEMES = {
-  gold:{ label:"មាស", swatch:"linear-gradient(135deg,#6B2D5C,#B8912E)",
-    bg:"#FBF6F8", ink:"#3B2440", accent1:"#6B2D5C", accent2:"#B8912E",
-    card:"#FFFFFF", border:"rgba(107,45,92,0.18)", radius:"4px",
+  gold:{ label:"មាស", swatch:"linear-gradient(135deg,#B8912E,#6B2D5C)",
+    bg:"#FBF8EF", ink:"#3B2A1C", accent1:"#B8912E", accent2:"#6B2D5C",
+    card:"#FFFFFF", border:"rgba(184,145,46,0.22)", radius:"4px",
     display:"'Moul',serif", body:"'Kantumruy Pro',sans-serif", ornate:true,
     displayEn:"'Great Vibes',cursive", bodyEn:"'Cormorant Garamond',serif" },
   rose:{ label:"ផ្កាកុលាប", swatch:"linear-gradient(135deg,#A8465A,#C9A227)",
@@ -372,6 +410,11 @@ const LABELS = {
     toggleKm:"ខ្មែរ", toggleEn:"English" }
 };
 
+// Staff no longer choose an effect; each guest picks one from the toggle on the invitation.
+const DEFAULT_GUEST_FX = "none";   // "none" | "petals" | "snow" | "stars"
+// Background song (one per project). Kept out of `state` because it is far too big for localStorage;
+// it is stored in IndexedDB instead (see the Music block below).
+let musicAsset = null;   // { name, size, dataUrl } or null
 const EFFECTS = {
   none:{ label:"គ្មាន", icon:"–" },
   petals:{ label:"ផ្កាធ្លាក់", icon:"🌸" },
@@ -453,7 +496,8 @@ const TIMELINE_PRESETS = [
 
 const defaultState = {
   theme:"gold",
-  effect:"petals",
+  openStyle:"door",
+  coverAlways:false,
   groomName:"", brideName:"",
   eyebrow:"",
   groomNameEn:"", brideNameEn:"",
@@ -488,15 +532,60 @@ const defaultState = {
 };
 const MAX_PHOTOS = 10;
 
+// ---- Data hygiene: every state that comes from storage or from an imported .json goes through here ----
+// (a broken or hand-edited file can no longer stop the app from starting, or inject code into the guest pages)
+const DATA_IMG_RE = /^data:image\/(?:jpeg|png|webp|gif);base64,[A-Za-z0-9+\/=]+$/;
+const hasOwn = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
+function safeImg(v){ return (typeof v === "string" && DATA_IMG_RE.test(v)) ? v : null; }
+function asStr(v, max){ return (typeof v === "string") ? (max ? v.slice(0, max) : v) : ""; }
+function normalizeState(raw){
+  const s = JSON.parse(JSON.stringify(defaultState));
+  const r = (raw && typeof raw === "object" && !Array.isArray(raw)) ? raw : {};
+  ["groomName","brideName","eyebrow","groomNameEn","brideNameEn","eyebrowEn","welcomeText","host1","host2",
+   "welcomeTextEn","host1En","host2En","venueName","venueAddr","venueNameEn","venueAddrEn","venueMapLink",
+   "openStyle","coverPhotoName","guestNamesFileRaw"].forEach(k => { s[k] = asStr(r[k], 20000); });
+  s.theme = (typeof r.theme === "string" && hasOwn(THEMES, r.theme)) ? r.theme : "gold";
+  s.eventDate = /^\d{4}-\d{2}-\d{2}$/.test(r.eventDate || "") ? r.eventDate : "";
+  s.startTime = /^\d{2}:\d{2}$/.test(r.startTime || "") ? r.startTime : "";
+  s.coverAlways = !!r.coverAlways;
+  const list = (v, keys) => (Array.isArray(v) ? v : []).filter(x => x && typeof x === "object").slice(0, 200)
+    .map(x => { const o = {}; keys.forEach(k => { o[k] = asStr(x[k], 500); }); return o; });
+  s.timeline = Array.isArray(r.timeline) ? list(r.timeline, ["time","name","timeEn","nameEn"]) : s.timeline;
+  s.contacts = Array.isArray(r.contacts) ? list(r.contacts, ["name","phone","nameEn"]) : s.contacts;
+  const names = Array.isArray(r.photoNames) ? r.photoNames : [];
+  s.photos = []; s.photoNames = [];
+  (Array.isArray(r.photos) ? r.photos : []).forEach((p, i) => {
+    const ok = safeImg(p);
+    if(ok && s.photos.length < MAX_PHOTOS){ s.photos.push(ok); s.photoNames.push(asStr(names[i], 200) || ("រូបភាព " + (s.photos.length))); }
+  });
+  s.coverPhoto = safeImg(r.coverPhoto);
+  if(!s.coverPhoto) s.coverPhotoName = "";
+  return s;
+}
+
 let state = JSON.parse(JSON.stringify(defaultState));
 try{
   const saved = localStorage.getItem("wib-draft-v2");
-  if(saved) state = Object.assign(JSON.parse(JSON.stringify(defaultState)), JSON.parse(saved));
+  if(saved) state = normalizeState(JSON.parse(saved));
 }catch(e){}
-state.photos = (state.photos || []).filter(Boolean);
-state.photoNames = state.photoNames || [];
 
-function saveDraft(){ try{ localStorage.setItem("wib-draft-v2", JSON.stringify(state)); }catch(e){} }
+// Saving: no longer silent. When the browser storage is full the staff is told (before, "saved" was shown even though nothing was written).
+const STORAGE_FULL_MSG = "⚠ ទំហំ browser ពេញ — រក្សាទុកមិនបាន! សូមនាំចេញ (Export) .json ទុកជាមុន រួចលុបគម្រោងចាស់ ឬកាត់បន្ថយចំនួនរូបភាព";
+let lastStorageWarn = 0;
+function saveDraft(){
+  try{ localStorage.setItem("wib-draft-v2", JSON.stringify(state)); return true; }
+  catch(e){
+    if(Date.now() - lastStorageWarn > 20000){
+      lastStorageWarn = Date.now();
+      const el = document.getElementById("profileStatus");
+      if(el) el.textContent = STORAGE_FULL_MSG;
+    }
+    return false;
+  }
+}
+let draftTimer = null;
+function saveDraftSoon(){ clearTimeout(draftTimer); draftTimer = setTimeout(saveDraft, 400); }   // typing no longer re-writes MBs of data on every key
+window.addEventListener("pagehide", () => { if(draftTimer){ clearTimeout(draftTimer); draftTimer = null; saveDraft(); } });
 
 function kmDate(dateStr){
   if(!dateStr) return "";
@@ -545,16 +634,18 @@ function buildSection(s, t, lang){
     : ``;
   const divider = `<div class="divider"><span class="rule"></span>${ornamentSvg}<span class="rule"></span></div>`;
 
-  const timelineHtml = s.timeline.map(item => {
-    const time = isKm ? item.time : (item.timeEn || item.time);
-    const name = isKm ? item.name : (item.nameEn || item.name);
-    return `<div class="tl-item"><div class="tl-time">${escapeHtml(time)}</div><p class="tl-name">${escapeHtml(name)}</p></div>`;
-  }).join("");
+  const timelineRows = s.timeline.map(item => ({
+    time: isKm ? item.time : (item.timeEn || item.time),
+    name: isKm ? item.name : (item.nameEn || item.name)
+  })).filter(r => (r.time || "").trim() || (r.name || "").trim());          // rows left blank are skipped
+  const timelineHtml = timelineRows.map(r =>
+    `<div class="tl-item"><div class="tl-time">${escapeHtml(r.time)}</div><p class="tl-name">${escapeHtml(r.name)}</p></div>`
+  ).join("");
 
   const galleryHtml = buildGalleryHtml(s, t);
   const galleryClass = "gallery gallery-" + s.theme;
 
-  const mapsUrl = (s.venueMapLink && s.venueMapLink.trim()) ? s.venueMapLink.trim() : "";
+  const mapsUrl = (s.venueMapLink && /^https?:\/\//i.test(s.venueMapLink.trim())) ? s.venueMapLink.trim() : "";   // http(s) only (blocks javascript: links)
 
   const contactsHtml = (s.contacts||[]).filter(c => c.name || c.phone).map(c => {
     const cname = isKm ? c.name : (c.nameEn || c.name);
@@ -570,19 +661,19 @@ function buildSection(s, t, lang){
   const guestLineText = s.__guestName ? (isKm ? `ជូនចំពោះ ${s.__guestName}` : `Dear ${s.__guestName},`) : "";
   const guestLineAttrs = guestLineText ? "" : ` style="display:none"`;
 
-  return `<section id="section${suf}" class="lang-section lang-${lang}" style="display:${isKm ? "block" : "none"}">
-<p class="guest-line" id="guestLine${suf}"${guestLineAttrs}>${escapeHtml(guestLineText)}</p>
-<section class="${heroClass}"${heroStyle}>
-<p class="eyebrow">${escapeHtml(eyebrow)}</p>
-<h1 class="names display">${escapeHtml(groom)}<span class="amp">${escapeHtml(L.and)}</span>${escapeHtml(bride)}</h1>
-<p class="hero-date">${displayDate}</p>
-</section>
-<section><div class="wrap"><div class="welcome">
+
+  // Which sections have something to show? (In the live preview every section stays visible.)
+  const isPrev = !!s.__preview;
+  const hasWelcome = !!((welcome || "").trim() || (host1 || "").trim() || (host2 || "").trim());
+  const hasCountdown = !!(s.eventDate && s.startTime);
+  const hasProgram = timelineRows.length > 0;
+  const hasGallery = s.photos.filter(Boolean).length > 0;
+  const hasVenue = !!((venueName || "").trim() || (venueAddr || "").trim() || mapsUrl);
+  const secWelcome   = (isPrev || hasWelcome)   ? `<section><div class="wrap"><div class="welcome">
 <p>${escapeHtml(welcome)}</p>
 <div class="hosts">${escapeHtml(host1)}<br>${escapeHtml(host2)}</div>
-</div></div></section>
-${divider}
-<section><div class="wrap">
+</div></div></section>` : "";
+  const secCountdown = (isPrev || hasCountdown) ? `<section><div class="wrap">
 <h2 class="section-title display">${L.countdownTitle}</h2>
 <p class="section-sub">${L.countdownSub}</p>
 <div class="countdown" id="countdown${suf}">
@@ -590,35 +681,297 @@ ${divider}
 <div class="cd-unit"><div class="cd-num" id="cd-h${suf}">00</div><div class="cd-label">${L.hours}</div></div>
 <div class="cd-unit"><div class="cd-num" id="cd-m${suf}">00</div><div class="cd-label">${L.minutes}</div></div>
 <div class="cd-unit"><div class="cd-num" id="cd-s${suf}">00</div><div class="cd-label">${L.seconds}</div></div>
-</div></div></section>
-${divider}
-<section><div class="wrap">
+</div></div></section>` : "";
+  const secProgram   = (isPrev || hasProgram)   ? `<section><div class="wrap">
 <h2 class="section-title display">${L.programTitle}</h2>
 <p class="section-sub">${displayDate}</p>
 <div class="timeline">${timelineHtml}</div>
-</div></section>
-${divider}
-<section><div class="wrap">
+</div></section>` : "";
+  const secGallery   = (isPrev || hasGallery)   ? `<section><div class="wrap">
 <h2 class="section-title display">${L.galleryTitle}</h2>
 <p class="section-sub">${L.gallerySub}</p>
 <div class="${galleryClass}">${galleryHtml}</div>
-</div></section>
-${divider}
-<section><div class="wrap">
+</div></section>` : "";
+  const secVenue     = (isPrev || hasVenue)     ? `<section><div class="wrap">
 <h2 class="section-title display">${L.venueTitle}</h2>
 <div class="venue-card">
 <p class="venue-name display">${escapeHtml(venueName)}</p>
 <p class="venue-addr">${escapeHtml(venueAddr)}</p>
 ${mapsUrl ? `<a class="map-btn" href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener">${L.mapBtn}</a>` : ""}
 </div>
-</div></section>
-${contactsHtml ? `${divider}<section><div class="wrap">
+</div></section>` : "";
+  const secContacts  = contactsHtml ? `<section><div class="wrap">
 <h2 class="section-title display">${L.contactsTitle}</h2>
 <p class="section-sub">${L.contactsSub}</p>
 <div class="contact-grid">${contactsHtml}</div>
-</div></section>` : ""}
+</div></section>` : "";
+  const bodySections = [secWelcome, secCountdown, secProgram, secGallery, secVenue, secContacts].filter(Boolean).join(divider);
+
+  return `<section id="section${suf}" class="lang-section lang-${lang}" style="display:${isKm ? "block" : "none"}">
+<p class="guest-line" id="guestLine${suf}"${guestLineAttrs}>${escapeHtml(guestLineText)}</p>
+<section class="${heroClass}"${heroStyle}>
+<p class="eyebrow">${escapeHtml(eyebrow)}</p>
+<h1 class="names display">${escapeHtml(groom)}<span class="amp">${escapeHtml(L.and)}</span>${escapeHtml(bride)}</h1>
+<p class="hero-date">${displayDate}</p>
+</section>
+${bodySections}
 <footer><div class="thanks display">${L.thanks}</div><div>${escapeHtml(groom)} ${L.and} ${escapeHtml(bride)}</div></footer>
 </section>`;
+}
+
+// ---------- Background music for the guest invitation ----------
+// Browsers block audio until the guest taps something, so the invitation opens with a
+// "tap to open" cover; the tap starts the song. A floating button lets guests mute/unmute.
+// Opening screens ("tap to open"). Each style = artwork (CSS only) + the time (ms) after which the screen fades away.
+// Only the chosen style's CSS is written into a guest file.
+const ocDarkText = c => `.open-cover.oc-s-${c} .oc-guest{color:#fff;opacity:.92;text-shadow:0 1px 8px rgba(0,0,0,.5);}
+.open-cover.oc-s-${c} .oc-names{color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.55);}
+.open-cover.oc-s-${c} .oc-hint{color:#fff;opacity:.85;text-shadow:0 1px 6px rgba(0,0,0,.55);}
+.open-cover.oc-s-${c} .oc-btn{background:#fff;color:var(--ink);box-shadow:0 8px 22px rgba(0,0,0,.4);}`;
+
+const LOTUS_PETALS = [   // [closed angle, open angle, closed scale, layer tint %]
+  [-14,-72,.80,40],[-7,-36,.80,40],[0,0,.80,40],[7,36,.80,40],[14,72,.80,40],
+  [-10,-54,.86,58],[-3,-18,.86,58],[3,18,.86,58],[10,54,.86,58],
+  [-6,-32,.92,76],[0,0,.94,76],[6,32,.92,76]
+];
+
+const COVER_STYLES = {
+  door:{
+    label:"ទ្វារ", finishMs:1500,
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="7" height="18" rx="1"/><rect x="13" y="3" width="7" height="18" rx="1"/><path d="M9 12v1.5M15 12v1.5"/></svg>',
+    parts:c => ({ behind:'<div class="oc-leaf oc-leaf-l"></div><div class="oc-leaf oc-leaf-r"></div>' }),
+    css:`.oc-s-door{background:radial-gradient(ellipse at 50% 50%,color-mix(in srgb,var(--accent-2) 45%,var(--bg)) 0%,var(--bg) 75%);perspective:1800px;}
+.oc-leaf{position:absolute;top:0;bottom:0;width:50%;z-index:2;background:linear-gradient(90deg,color-mix(in srgb,var(--accent-1) 68%,#000),var(--accent-1) 42%,color-mix(in srgb,var(--accent-1) 78%,#000));box-shadow:inset 0 0 0 5px color-mix(in srgb,var(--accent-2) 55%,transparent),inset 0 0 70px rgba(0,0,0,.4);transition:transform 1.25s cubic-bezier(.66,0,.24,1);}
+.oc-leaf::before{content:"";position:absolute;inset:7% 11% 9%;border:2px solid color-mix(in srgb,var(--accent-2) 62%,transparent);border-radius:3px;box-shadow:inset 0 0 26px rgba(0,0,0,.28),0 0 0 1px rgba(0,0,0,.25);}
+.oc-leaf::after{content:"";position:absolute;top:50%;width:9px;height:96px;margin-top:-48px;border-radius:5px;background:linear-gradient(90deg,color-mix(in srgb,var(--accent-2) 60%,#fff),var(--accent-2) 55%,color-mix(in srgb,var(--accent-2) 70%,#000));box-shadow:0 3px 8px rgba(0,0,0,.45);}
+.oc-leaf-l{left:0;transform-origin:0 50%;}
+.oc-leaf-l::after{right:14px;}
+.oc-leaf-r{right:0;transform-origin:100% 50%;}
+.oc-leaf-r::after{left:14px;}
+.open-cover.opening .oc-leaf-l{transform:rotateY(-112deg);}
+.open-cover.opening .oc-leaf-r{transform:rotateY(112deg);}
+${ocDarkText("door")}`
+  },
+  curtain:{
+    label:"វាំងនន", finishMs:1800,
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18"/><path d="M5 4c0 6-1 12-2 16h6c-1-4-2-10-2-16"/><path d="M19 4c0 6 1 12 2 16h-6c1-4 2-10 2-16"/></svg>',
+    parts:c => ({ behind:'<div class="oc-drape oc-drape-l"></div><div class="oc-drape oc-drape-r"></div><div class="oc-valance"></div>' }),
+    css:`.oc-s-curtain{background:radial-gradient(ellipse at 50% 45%,color-mix(in srgb,var(--accent-2) 40%,var(--bg)) 0%,var(--bg) 72%);}
+.oc-drape{position:absolute;top:0;bottom:0;width:50.4%;z-index:2;background:repeating-linear-gradient(90deg,rgba(0,0,0,.34) 0,rgba(0,0,0,0) 15px,rgba(255,255,255,.13) 30px,rgba(0,0,0,.34) 46px),linear-gradient(180deg,color-mix(in srgb,var(--accent-1) 88%,#fff) 0%,var(--accent-1) 40%,color-mix(in srgb,var(--accent-1) 62%,#000) 100%);transition:transform 1.6s cubic-bezier(.62,0,.28,1);}
+.oc-drape::after{content:"";position:absolute;left:0;right:0;bottom:0;height:12px;background:repeating-linear-gradient(90deg,var(--accent-2) 0 3px,transparent 3px 7px);}
+.oc-drape-l{left:0;transform-origin:0 50%;}
+.oc-drape-r{right:0;transform-origin:100% 50%;}
+.open-cover.opening .oc-drape{transform:scaleX(.15);}
+.oc-valance{position:absolute;top:0;left:0;right:0;height:58px;z-index:3;background:linear-gradient(180deg,color-mix(in srgb,var(--accent-1) 60%,#000),var(--accent-1));border-bottom:4px solid var(--accent-2);box-shadow:0 6px 16px rgba(0,0,0,.4);}
+.oc-valance::after{content:"";position:absolute;left:0;right:0;top:100%;height:20px;background:radial-gradient(circle at 22px 0,var(--accent-1) 20px,transparent 21px) 0 0/44px 20px repeat-x;filter:drop-shadow(0 4px 3px rgba(0,0,0,.3));}
+${ocDarkText("curtain")}`
+  },
+  lock:{
+    label:"សោ", finishMs:1750,
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+    parts:c => ({
+      behind:'<div class="oc-half oc-half-t"></div><div class="oc-half oc-half-b"></div>',
+      top:'<div class="oc-lockbox"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="10" y="22" width="28" height="20" rx="4" fill="currentColor" fill-opacity=".15"/><path class="oc-shackle" d="M16 22v-6a8 8 0 0 1 16 0v6"/><circle cx="24" cy="31" r="2.6" fill="currentColor" stroke="none"/><path d="M24 33v4"/></svg></div>'
+    }),
+    css:`.oc-half{position:absolute;left:0;right:0;height:50.4%;z-index:1;background:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/34px 34px,linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/34px 34px,color-mix(in srgb,var(--accent-1) 26%,#080a0f);transition:transform .95s cubic-bezier(.72,0,.28,1) .6s;}
+.oc-half-t{top:0;}
+.oc-half-b{bottom:0;}
+.oc-half::after{content:"";position:absolute;left:0;right:0;height:2px;background:var(--accent-2);box-shadow:0 0 14px var(--accent-2);opacity:.85;}
+.oc-half-t::after{bottom:0;}
+.oc-half-b::after{top:0;}
+.open-cover.opening .oc-half-t{transform:translateY(-101%);}
+.open-cover.opening .oc-half-b{transform:translateY(101%);}
+.oc-lockbox{width:116px;height:116px;margin:0 0 26px;border-radius:50%;border:3px solid var(--accent-2);color:var(--accent-2);display:grid;place-items:center;box-shadow:0 0 0 8px rgba(255,255,255,.05),0 0 30px color-mix(in srgb,var(--accent-2) 50%,transparent);transition:border-color .3s ease,color .3s ease,box-shadow .3s ease,opacity .35s ease .62s;animation:oc-led 2.4s ease-in-out infinite;}
+.oc-lockbox svg{width:56px;height:56px;overflow:visible;}
+.oc-shackle{transition:transform .5s cubic-bezier(.3,1.5,.5,1);transform-box:fill-box;transform-origin:0 100%;}
+.open-cover.opening .oc-lockbox{border-color:#3ddc84;color:#3ddc84;box-shadow:0 0 0 8px rgba(61,220,132,.12),0 0 36px rgba(61,220,132,.7);opacity:0;animation:none;}
+.open-cover.opening .oc-shackle{transform:translateY(-5px) rotate(-38deg);}
+@keyframes oc-led{0%,100%{box-shadow:0 0 0 8px rgba(255,255,255,.05),0 0 22px color-mix(in srgb,var(--accent-2) 40%,transparent);}50%{box-shadow:0 0 0 8px rgba(255,255,255,.08),0 0 38px color-mix(in srgb,var(--accent-2) 75%,transparent);}}
+${ocDarkText("lock")}`
+  },
+  envelope:{
+    label:"អំណោយ", finishMs:1900,
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="1.5"/><rect x="3" y="7" width="18" height="4" rx="1.2"/><path d="M12 7v13"/><path d="M12 7C10.3 7 8 6 8 4.2 8 3 9 2 10.2 2 12 2 12 5 12 7Z"/><path d="M12 7c1.7 0 4-1 4-2.8C16 3 15 2 13.8 2 12 2 12 5 12 7Z"/></svg>',
+    parts:c => ({ mid:'<div class="oc-gift"><div class="oc-gift-glow"></div><div class="oc-gift-base"><i class="oc-gift-rv"></i></div><div class="oc-gift-heart">&#9829;</div><div class="oc-gift-lid"><i class="oc-gift-rv"></i><i class="oc-gift-rh"></i></div></div>' }),
+    css:`.oc-s-envelope{background:radial-gradient(ellipse at 50% 40%,color-mix(in srgb,var(--accent-2) 22%,transparent) 0%,transparent 62%),var(--bg);}
+.oc-gift{position:relative;width:min(58vw,210px);height:min(58vw,210px);margin:0 auto 30px;perspective:900px;transition:transform .75s ease 1.1s,opacity .5s ease 1.25s;}
+.oc-gift-glow{position:absolute;inset:-25%;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent-2) 40%,transparent),transparent 68%);opacity:0;transition:opacity .5s ease .5s;}
+.open-cover.opening .oc-gift-glow{opacity:1;}
+.oc-gift-base{position:absolute;left:2%;right:2%;bottom:0;height:62%;border-radius:6px;overflow:hidden;background:linear-gradient(160deg,color-mix(in srgb,var(--accent-1) 88%,#fff),var(--accent-1) 55%,color-mix(in srgb,var(--accent-1) 68%,#000));box-shadow:0 16px 30px rgba(0,0,0,.28);}
+.oc-gift-heart{position:absolute;left:50%;bottom:20%;width:38px;height:38px;margin-left:-19px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--accent-2) 72%);color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;line-height:1;box-shadow:0 0 26px color-mix(in srgb,var(--accent-2) 75%,transparent);opacity:0;transform:scale(.35);transition:opacity .55s ease .55s,transform .65s ease .55s;z-index:1;}
+.open-cover.opening .oc-gift-heart{opacity:1;transform:scale(1);}
+.oc-gift-lid{position:absolute;left:-3%;right:-3%;top:0;height:32%;border-radius:6px 6px 2px 2px;overflow:hidden;background:linear-gradient(160deg,color-mix(in srgb,var(--accent-2) 85%,#fff),var(--accent-2) 55%,color-mix(in srgb,var(--accent-2) 68%,#000));box-shadow:0 8px 16px rgba(0,0,0,.25);transform-origin:50% 100%;transition:transform 1s cubic-bezier(.5,0,.22,1) .1s;z-index:3;}
+.oc-gift-rv{position:absolute;top:0;bottom:0;left:50%;width:15%;margin-left:-7.5%;background:color-mix(in srgb,#fff 55%,transparent);}
+.oc-gift-rh{position:absolute;left:0;right:0;top:35%;height:22%;background:color-mix(in srgb,#fff 55%,transparent);}
+.open-cover.opening .oc-gift-lid{transform:rotateX(-122deg) translateY(-4%);}
+.open-cover.opening .oc-gift{transform:scale(1.5);opacity:0;}
+@media(max-height:640px){.oc-gift{width:170px;height:170px;}}`
+  },
+  lotus:{
+    label:"ផ្កាឈូក", finishMs:1900,
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20c-3-2-4-6-3-10 1 2 2 3 3 4 1-1 2-2 3-4 1 4 0 8-3 10z"/><path d="M12 20c-5 0-8-3-9-7 3 0 5 1 6.5 3"/><path d="M12 20c5 0 8-3 9-7-3 0-5 1-6.5 3"/></svg>',
+    parts:c => ({ mid:'<div class="oc-lotus">' + LOTUS_PETALS.map(pt => `<svg class="oc-petal" viewBox="0 0 64 118" aria-hidden="true" style="--a0:${pt[0]}deg;--a1:${pt[1]}deg;--s0:${pt[2]};--tint:${pt[3]}%"><path d="M32 117C4 92 4 34 32 1C60 34 60 92 32 117Z"/></svg>`).join("") + '<b class="oc-core"></b><em class="oc-water"></em></div>' }),
+    css:`.oc-s-lotus{background:radial-gradient(ellipse at 50% 46%,color-mix(in srgb,var(--accent-2) 24%,transparent) 0%,transparent 60%),var(--bg);}
+.oc-lotus{position:relative;width:250px;height:200px;margin:4px auto 24px;transition:transform 1s cubic-bezier(.6,0,.3,1) 1s,opacity .6s ease 1.5s;}
+.oc-petal{position:absolute;left:50%;bottom:16px;width:64px;height:118px;margin-left:-32px;transform-origin:50% 100%;transform:rotate(var(--a0)) scale(var(--s0));transition:transform 1.05s cubic-bezier(.3,1.25,.4,1);overflow:visible;}
+.oc-petal path{fill:color-mix(in srgb,var(--accent-1) var(--tint),#fff);stroke:rgba(255,255,255,.75);stroke-width:1.5;}
+.open-cover.opening .oc-petal{transform:rotate(var(--a1)) scale(1);}
+.oc-core{position:absolute;left:50%;bottom:14px;width:40px;height:40px;margin-left:-20px;border-radius:50%;background:radial-gradient(circle,#fff6cf 0%,var(--accent-2) 70%);box-shadow:0 0 30px color-mix(in srgb,var(--accent-2) 80%,transparent);opacity:0;transform:scale(.3);transition:opacity .6s ease .5s,transform .8s ease .5s;}
+.open-cover.opening .oc-core{opacity:1;transform:scale(1);}
+.open-cover.opening .oc-lotus{transform:scale(7);opacity:0;}
+.oc-water{position:absolute;left:6%;right:6%;bottom:0;height:22px;border-radius:50%;border:2px solid color-mix(in srgb,var(--accent-1) 35%,transparent);}
+@media(max-height:640px){.oc-lotus{transform-origin:50% 100%;height:170px;}}`
+  },
+  book:{
+    label:"ក្រណាត់រមូរ", finishMs:1900,
+    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="3" rx="1.5"/><rect x="3" y="17" width="18" height="3" rx="1.5"/><path d="M6 7v10M18 7v10"/></svg>',
+    parts:c => ({
+      mid:'<div class="oc-scroll"><div class="oc-scroll-rod oc-scroll-rod-t"></div><div class="oc-scroll-paper"><i></i><b>&#9829;</b><i></i></div><div class="oc-scroll-rod oc-scroll-rod-b"></div></div>'
+    }),
+    css:`.oc-s-book{background:radial-gradient(ellipse at 50% 42%,color-mix(in srgb,var(--accent-2) 20%,transparent) 0%,transparent 62%),var(--bg);}
+.oc-scroll{position:relative;display:flex;flex-direction:column;align-items:center;width:min(72vw,260px);margin:0 auto 28px;transition:transform .8s ease 1.15s,opacity .5s ease 1.3s;}
+.oc-scroll-rod{position:relative;z-index:3;width:100%;height:16px;border-radius:8px;flex:0 0 auto;background:linear-gradient(180deg,color-mix(in srgb,var(--accent-2) 88%,#fff),var(--accent-2) 55%,color-mix(in srgb,var(--accent-2) 68%,#000));box-shadow:0 4px 10px rgba(0,0,0,.3);transition:transform .95s cubic-bezier(.5,0,.22,1);}
+.oc-scroll-rod::before,.oc-scroll-rod::after{content:"";position:absolute;top:-3px;bottom:-3px;width:12px;border-radius:50%;background:color-mix(in srgb,var(--accent-2) 55%,#000);}
+.oc-scroll-rod::before{left:-6px;}
+.oc-scroll-rod::after{right:-6px;}
+.open-cover.opening .oc-scroll-rod-t{transform:translateY(-16px);}
+.open-cover.opening .oc-scroll-rod-b{transform:translateY(16px);}
+.oc-scroll-paper{width:90%;min-height:150px;margin:-4px 0;background:#fbf7ee;box-shadow:0 10px 24px rgba(0,0,0,.22);display:flex;align-items:center;justify-content:center;gap:9px;color:var(--accent-2);transform:scaleY(.04);transform-origin:50% 50%;transition:transform 1.05s cubic-bezier(.5,0,.2,1) .12s;}
+.oc-scroll-paper i{display:block;height:2px;width:44px;background:linear-gradient(90deg,transparent,var(--accent-2),transparent);opacity:0;transition:opacity .4s ease .95s;}
+.oc-scroll-paper b{font-size:22px;line-height:1;font-weight:400;opacity:0;transition:opacity .4s ease .95s;}
+.open-cover.opening .oc-scroll-paper{transform:scaleY(1);}
+.open-cover.opening .oc-scroll-paper i,.open-cover.opening .oc-scroll-paper b{opacity:1;}
+.open-cover.opening .oc-scroll{transform:scale(1.4);opacity:0;}
+@media(max-height:640px){.oc-scroll{width:220px;}.oc-scroll-paper{min-height:120px;}}`
+  }
+};
+
+const OC_BASE_CSS = `
+.open-cover{position:fixed;inset:0;z-index:300;overflow:hidden;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.open-cover.finish{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .6s ease,visibility .6s;}
+.oc-inner{position:relative;z-index:5;height:100%;max-width:440px;margin:0 auto;padding:28px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.oc-fade{transition:opacity .35s ease,transform .35s ease;}
+.open-cover.opening .oc-fade{opacity:0;transform:translateY(-6px);pointer-events:none;}
+.oc-guest{margin:0 0 12px;font-size:15px;color:var(--ink);opacity:.85;line-height:1.7;}
+.oc-guest span{font-family:var(--body-font-en);font-style:italic;opacity:.8;}
+.oc-names{font-size:clamp(28px,8vw,44px);line-height:1.5;margin:0 0 28px;}
+.oc-btn{border:none;cursor:pointer;background:var(--accent-1);color:#fff;border-radius:999px;padding:14px 30px;display:inline-flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 8px 22px color-mix(in srgb,var(--accent-1) 35%,transparent);font-family:var(--body-font);animation:oc-pulse 2.6s ease-in-out infinite;}
+.open-cover.opening .oc-btn{animation:none;}
+.oc-btn .oc-km{font-size:16px;font-weight:600;line-height:1.6;}
+.oc-btn .oc-en{font-size:12.5px;opacity:.9;font-family:var(--body-font-en);font-style:italic;}
+.oc-hint{margin:18px 0 0;font-size:13px;color:var(--ink);opacity:.65;line-height:1.7;}
+.oc-hint span{font-family:var(--body-font-en);font-style:italic;display:block;}
+.oc-btn:focus-visible,.music-btn:focus-visible{outline:2px solid var(--accent-2);outline-offset:3px;}
+body.oc-noscroll{overflow:hidden;}
+@keyframes oc-pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.045);}}
+@media(prefers-reduced-motion:reduce){.open-cover *,.open-cover.finish{transition:none !important;animation:none !important;}}
+`;
+
+const MUSIC_BTN_CSS = `
+.music-btn{position:fixed;right:16px;bottom:18px;z-index:100;width:44px;height:44px;padding:0;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--accent-1);box-shadow:0 4px 14px rgba(0,0,0,.14);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.music-btn svg{width:20px;height:20px;}
+.music-btn .ico-off{display:none;}
+.music-btn:not(.on) .ico-on{display:none;}
+.music-btn:not(.on) .ico-off{display:block;}
+.music-btn.on{background:var(--accent-1);color:#fff;}
+`;
+
+// ---------- Opening screen + background music for the guest invitation ----------
+// Browsers block audio until the guest taps something, so a song always comes with the opening screen:
+// the tap starts the song. A floating button lets guests mute/unmute. The opening screen can also be
+// shown without a song (state.coverAlways).
+function buildMusicParts(s){
+  const music = (musicAsset && musicAsset.dataUrl) ? musicAsset : null;
+  if(!music && !s.coverAlways) return { css:"", html:"", js:"" };
+
+  const key = COVER_STYLES[s.openStyle] ? s.openStyle : "door";
+  const cfg = COVER_STYLES[key];
+  const names = [s.groomName || s.groomNameEn, s.brideName || s.brideNameEn].filter(Boolean).map(escapeHtml).join(" & ");
+  const g = s.__guestName ? escapeHtml(s.__guestName) : "";
+  const previewAttr = s.__preview ? ' data-preview="1"' : "";
+  const p = cfg.parts({ names });
+
+  const namesHtml = (names && p.names !== false) ? `<p class="oc-names display oc-fade">${names}</p>` : "";
+  const btnHtml = g
+    ? `<button class="oc-btn oc-fade" id="openBtn" type="button"><span class="oc-km">ជូនចំពោះ ${g}</span><span class="oc-en">Dear ${g}</span></button>`
+    : `<button class="oc-btn oc-fade" id="openBtn" type="button"><span class="oc-km">ចុចដើម្បីបើកធៀបអញ្ជើញ</span><span class="oc-en">Tap to open your invitation</span></button>`;
+  const hintHtml = music ? `<p class="oc-hint oc-fade">សូមបើកសំឡេងដើម្បីស្តាប់ចម្រៀង<span>Turn your sound on for the music</span></p>` : "";
+
+  const css = (music ? MUSIC_BTN_CSS : "") + OC_BASE_CSS + cfg.css;
+
+  const musicHtml = music ? `
+<audio id="bgm" src="${music.dataUrl}" loop preload="metadata"></audio>
+<button class="music-btn" id="musicBtn" type="button" aria-pressed="false" aria-label="Music" title="ចម្រៀង / Music">
+  <svg class="ico-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+  <svg class="ico-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><line x1="3" y1="3" x2="21" y2="21"/></svg>
+</button>` : "";
+  const html = musicHtml + `
+<div class="open-cover oc-s-${key}" id="openCover" role="dialog" aria-modal="true" aria-label="Open invitation"${previewAttr}>${p.behind || ""}<div class="oc-inner">${p.top || ""}${namesHtml}${p.mid || ""}${btnHtml}${hintHtml}</div></div>`;
+
+  const js = `
+var ocEl=document.getElementById('openCover');
+var bgm=document.getElementById('bgm');
+var playMusic=function(){};
+if(bgm){
+  var mBtn=document.getElementById('musicBtn');
+  var wasPlaying=false;
+  var baseVol=0.7;
+  var fadeVol=function(){
+    var d=bgm.duration, ct=bgm.currentTime, v=baseVol;
+    if(d && isFinite(d) && d>8){
+      var tail=d-ct;
+      if(tail>=0 && tail<3){ v=baseVol*(tail/3); }   // tail<0: browser's duration estimate was short, keep playing
+      else if(ct<2){ v=baseVol*Math.min(1,0.15+0.85*ct/2); }
+    }
+    try{ bgm.volume=Math.max(0,Math.min(1,v)); }catch(e){}
+  };
+  fadeVol();
+  bgm.addEventListener('timeupdate',fadeVol);
+  var syncMusic=function(){
+    if(!mBtn) return;
+    var on=!bgm.paused;
+    mBtn.classList.toggle('on',on);
+    mBtn.setAttribute('aria-pressed',on?'true':'false');
+  };
+  playMusic=function(){
+    try{ var pr=bgm.play(); if(pr&&pr.catch){ pr.catch(function(){ syncMusic(); }); } }catch(e){}
+  };
+  bgm.addEventListener('play',syncMusic);
+  bgm.addEventListener('pause',syncMusic);
+  syncMusic();
+  if(mBtn){ mBtn.addEventListener('click',function(){ if(bgm.paused){ playMusic(); } else { bgm.pause(); } }); }
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){ wasPlaying=!bgm.paused; bgm.pause(); }
+    else if(wasPlaying){ wasPlaying=false; playMusic(); }
+  });
+}
+if(ocEl){
+  var seenKey='wib-cover-seen';
+  var isPreview=ocEl.getAttribute('data-preview')==='1';
+  var alreadySeen=false;
+  if(isPreview){ try{ alreadySeen=sessionStorage.getItem(seenKey)==='1'; }catch(e){} }
+  if(alreadySeen){
+    ocEl.parentNode.removeChild(ocEl);
+  }else{
+    document.body.classList.add('oc-noscroll');
+    var opened=false, reduce=false;
+    try{ reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
+    ocEl.addEventListener('click',function(){
+      if(opened) return;
+      opened=true;
+      playMusic();
+      if(isPreview){ try{ sessionStorage.setItem(seenKey,'1'); }catch(e){} }
+      ocEl.classList.add('opening');
+      setTimeout(function(){
+        ocEl.classList.add('finish');
+        document.body.classList.remove('oc-noscroll');
+        setTimeout(function(){ if(ocEl.parentNode){ ocEl.parentNode.removeChild(ocEl); } },650);
+      },reduce?0:${cfg.finishMs});
+    });
+  }
+}
+`;
+  return { css, html, js };
 }
 
 function renderInvitation(s){
@@ -628,6 +981,7 @@ function renderInvitation(s){
   const enSection = buildSection(s, t, "en");
   const LKM = LABELS.km, LEN = LABELS.en;
   const bodyClass = s.__guestName ? " class=\"guest-mode\"" : "";
+  const mp = buildMusicParts(s);
 
   return `<!DOCTYPE html><html lang="km"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -709,16 +1063,22 @@ footer .thanks{font-size:19px;color:var(--accent-1);opacity:1;margin-bottom:8px;
 .lang-toggle button{border:none;background:none;padding:8px 16px;border-radius:999px;font-size:13px;cursor:pointer;color:var(--ink);font-family:'Kantumruy Pro',sans-serif;font-style:normal;}
 .lang-toggle button.active{background:var(--accent-1);color:#fff;}
 body.guest-mode .lang-toggle{top:62px;}
-@media(max-width:480px){.hero{padding:64px 18px 48px;}.welcome{padding:30px 20px;}.lang-toggle{top:10px;right:10px;}.lang-toggle button{padding:7px 12px;font-size:12px;}body.guest-mode .lang-toggle{top:56px;}}
-</style></head><body${bodyClass}>
+.fx-toggle{position:fixed;top:16px;left:16px;z-index:100;display:flex;gap:2px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:4px;box-shadow:0 4px 14px rgba(0,0,0,.14);}
+.fx-toggle button{border:none;background:none;width:32px;height:32px;border-radius:50%;font-size:15px;line-height:1;cursor:pointer;color:var(--ink);display:flex;align-items:center;justify-content:center;font-style:normal;}
+.fx-toggle button.active{background:var(--accent-1);color:#fff;}
+body.guest-mode .fx-toggle{top:62px;}
+@media(max-width:480px){.hero{padding:64px 18px 48px;}.welcome{padding:30px 20px;}.lang-toggle{top:10px;right:10px;}.lang-toggle button{padding:7px 12px;font-size:12px;}body.guest-mode .lang-toggle{top:56px;}.fx-toggle{top:10px;left:10px;}.fx-toggle button{width:28px;height:28px;font-size:13px;}body.guest-mode .fx-toggle{top:56px;}}
+${mp.css}</style></head><body${bodyClass}>
 <div class="lang-toggle">
   <button id="btn-km" class="active" type="button">${LKM.toggleKm}</button>
   <button id="btn-en" type="button">${LEN.toggleEn}</button>
 </div>
+<div class="fx-toggle" id="fxToggle">${Object.keys(EFFECTS).map(key => `<button data-fx="${key}" type="button" title="${escapeHtml(EFFECTS[key].label)}">${EFFECTS[key].icon}</button>`).join("")}</div>
+${mp.html}
 ${kmSection}
 ${enSection}
 <script>(function(){
-var target=${targetIso ? `"${targetIso}"` : "null"};
+var target=${targetIso ? JSON.stringify(targetIso).replace(/</g,"\\u003c") : "null"};
 var t=target?new Date(target).getTime():0;
 function pad(n){return String(n).padStart(2,"0");}
 var messages={km:"${LKM.congrats}",en:"${LEN.congrats}"};
@@ -762,72 +1122,83 @@ function setLang(lang){
 document.getElementById("btn-km").addEventListener("click", function(){ setLang("km"); });
 document.getElementById("btn-en").addEventListener("click", function(){ setLang("en"); });
 
-var fxType=${JSON.stringify(s.effect || "none")};
 var fxColor1=${JSON.stringify(t.accent1)};
 var fxColor2=${JSON.stringify(t.accent2)};
-if(fxType!=="none"){
-  var fxCanvas=document.createElement("canvas");
+var fxType=${JSON.stringify(DEFAULT_GUEST_FX)};
+try{ var savedFx=localStorage.getItem("wib-guest-fx"); if(savedFx) fxType=savedFx; }catch(e){}
+
+var fxCanvas=null, fxCtx=null, fxParticles=[], fxAnimId=null;
+function fxResize(){ if(fxCanvas){ fxCanvas.width=window.innerWidth; fxCanvas.height=window.innerHeight; } }
+function fxStop(){
+  if(fxAnimId){ cancelAnimationFrame(fxAnimId); fxAnimId=null; }
+  if(fxCanvas){ fxCanvas.remove(); fxCanvas=null; fxCtx=null; }
+  window.removeEventListener("resize", fxResize);
+}
+function fxDrawPetal(p){
+  fxCtx.save();
+  fxCtx.translate(p.x,p.y);
+  fxCtx.rotate(p.angle);
+  fxCtx.globalAlpha=p.opacity;
+  fxCtx.fillStyle=fxColor1;
+  fxCtx.beginPath();
+  fxCtx.ellipse(0,0,p.r,p.r*0.6,0,0,Math.PI*2);
+  fxCtx.fill();
+  fxCtx.restore();
+}
+function fxDrawSnow(p){
+  fxCtx.beginPath();
+  fxCtx.globalAlpha=p.opacity;
+  fxCtx.fillStyle="#ffffff";
+  fxCtx.arc(p.x,p.y,p.r,0,Math.PI*2);
+  fxCtx.fill();
+}
+function fxDrawStar(p){
+  fxCtx.save();
+  fxCtx.translate(p.x,p.y);
+  fxCtx.rotate(p.angle);
+  fxCtx.globalAlpha=p.opacity;
+  fxCtx.fillStyle=fxColor2;
+  var spikes=4, outer=p.r*2, inner=p.r*0.7;
+  fxCtx.beginPath();
+  for(var si=0; si<spikes*2; si++){
+    var rad = si%2===0 ? outer : inner;
+    var ang = (Math.PI/spikes)*si;
+    fxCtx.lineTo(Math.cos(ang)*rad, Math.sin(ang)*rad);
+  }
+  fxCtx.closePath();
+  fxCtx.fill();
+  fxCtx.restore();
+}
+function fxStart(type){
+  fxStop();
+  fxType=type;
+  if(type==="none") return;
+  fxCanvas=document.createElement("canvas");
   fxCanvas.id="fx-canvas";
   fxCanvas.style.cssText="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:40;";
   document.body.appendChild(fxCanvas);
-  var fxCtx=fxCanvas.getContext("2d");
-  function fxResize(){ fxCanvas.width=window.innerWidth; fxCanvas.height=window.innerHeight; }
+  fxCtx=fxCanvas.getContext("2d");
   fxResize();
   window.addEventListener("resize", fxResize);
 
-  var fxCount = fxType==="snow" ? 70 : (fxType==="stars" ? 50 : 40);
+  var fxCount = type==="snow" ? 70 : (type==="stars" ? 50 : 40);
   function fxSpawn(initial){
     return {
       x: Math.random()*fxCanvas.width,
       y: initial ? Math.random()*fxCanvas.height : -10,
-      r: fxType==="snow" ? (2+Math.random()*3) : (fxType==="petals" ? (5+Math.random()*5) : (2+Math.random()*2)),
-      speed: fxType==="snow" ? (0.6+Math.random()*1.2) : (fxType==="petals" ? (0.5+Math.random()*1) : (0.8+Math.random()*1.5)),
+      r: type==="snow" ? (2+Math.random()*3) : (type==="petals" ? (5+Math.random()*5) : (2+Math.random()*2)),
+      speed: type==="snow" ? (0.6+Math.random()*1.2) : (type==="petals" ? (0.5+Math.random()*1) : (0.8+Math.random()*1.5)),
       drift: Math.random()*1-0.5,
       angle: Math.random()*Math.PI*2,
       spin: (Math.random()*0.02)-0.01,
       sway: Math.random()*Math.PI*2,
       swaySpeed: 0.01+Math.random()*0.02,
-      opacity: fxType==="stars" ? (0.35+Math.random()*0.65) : (0.6+Math.random()*0.4)
+      opacity: type==="stars" ? (0.35+Math.random()*0.65) : (0.6+Math.random()*0.4)
     };
   }
-  var fxParticles=[];
+  fxParticles=[];
   for(var fi=0; fi<fxCount; fi++){ fxParticles.push(fxSpawn(true)); }
 
-  function fxDrawPetal(p){
-    fxCtx.save();
-    fxCtx.translate(p.x,p.y);
-    fxCtx.rotate(p.angle);
-    fxCtx.globalAlpha=p.opacity;
-    fxCtx.fillStyle=fxColor1;
-    fxCtx.beginPath();
-    fxCtx.ellipse(0,0,p.r,p.r*0.6,0,0,Math.PI*2);
-    fxCtx.fill();
-    fxCtx.restore();
-  }
-  function fxDrawSnow(p){
-    fxCtx.beginPath();
-    fxCtx.globalAlpha=p.opacity;
-    fxCtx.fillStyle="#ffffff";
-    fxCtx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    fxCtx.fill();
-  }
-  function fxDrawStar(p){
-    fxCtx.save();
-    fxCtx.translate(p.x,p.y);
-    fxCtx.rotate(p.angle);
-    fxCtx.globalAlpha=p.opacity;
-    fxCtx.fillStyle=fxColor2;
-    var spikes=4, outer=p.r*2, inner=p.r*0.7;
-    fxCtx.beginPath();
-    for(var si=0; si<spikes*2; si++){
-      var rad = si%2===0 ? outer : inner;
-      var ang = (Math.PI/spikes)*si;
-      fxCtx.lineTo(Math.cos(ang)*rad, Math.sin(ang)*rad);
-    }
-    fxCtx.closePath();
-    fxCtx.fill();
-    fxCtx.restore();
-  }
   function fxLoop(){
     fxCtx.clearRect(0,0,fxCanvas.width,fxCanvas.height);
     fxParticles.forEach(function(p){
@@ -836,14 +1207,27 @@ if(fxType!=="none"){
       p.x+=Math.sin(p.sway)*0.6+p.drift*0.2;
       p.angle+=p.spin;
       if(p.y>fxCanvas.height+20 || p.x<-20 || p.x>fxCanvas.width+20){ Object.assign(p, fxSpawn(false)); }
-      if(fxType==="snow") fxDrawSnow(p);
-      else if(fxType==="stars") fxDrawStar(p);
+      if(type==="snow") fxDrawSnow(p);
+      else if(type==="stars") fxDrawStar(p);
       else fxDrawPetal(p);
     });
-    requestAnimationFrame(fxLoop);
+    fxAnimId=requestAnimationFrame(fxLoop);
   }
   fxLoop();
 }
+
+var fxButtons=document.querySelectorAll("#fxToggle button");
+Array.prototype.forEach.call(fxButtons, function(btn){
+  btn.classList.toggle("active", btn.getAttribute("data-fx")===fxType);
+  btn.addEventListener("click", function(){
+    var type=btn.getAttribute("data-fx");
+    fxStart(type);
+    try{ localStorage.setItem("wib-guest-fx", type); }catch(e){}
+    Array.prototype.forEach.call(fxButtons, function(b){ b.classList.toggle("active", b===btn); });
+  });
+});
+fxStart(fxType);
+${mp.js}
 })();<\/script>
 </body></html>`;
 }
@@ -856,7 +1240,7 @@ function buildThemePicker(){
   const grid = $("themeGrid");
   grid.innerHTML = Object.keys(THEMES).map(key => {
     const t = THEMES[key];
-    return `<div class="theme-card${state.theme===key?" active":""}" data-theme="${key}">
+    return `<div class="theme-card${state.theme===key?" active":""}" data-theme="${key}" title="${t.label}">
       <div class="theme-swatch" style="background:${t.swatch}"></div>
       <span>${t.label}</span>
     </div>`;
@@ -865,24 +1249,6 @@ function buildThemePicker(){
     card.addEventListener("click", () => {
       state.theme = card.dataset.theme;
       buildThemePicker();
-      update();
-    });
-  });
-}
-
-function buildEffectPicker(){
-  const grid = $("effectGrid");
-  grid.innerHTML = Object.keys(EFFECTS).map(key => {
-    const e = EFFECTS[key];
-    return `<div class="effect-card${state.effect===key?" active":""}" data-effect="${key}">
-      <div class="effect-icon">${e.icon}</div>
-      <span>${e.label}</span>
-    </div>`;
-  }).join("");
-  grid.querySelectorAll(".effect-card").forEach(card => {
-    card.addEventListener("click", () => {
-      state.effect = card.dataset.effect;
-      buildEffectPicker();
       update();
     });
   });
@@ -1021,7 +1387,9 @@ function buildPhotos(){
   });
 }
 
-const MAX_GUESTS_PER_DOWNLOAD = 30;           // guests per ZIP download
+const MAX_MUSIC_INPUT_BYTES = 50 * 1024 * 1024; // largest song file staff may pick (it gets trimmed)
+const MAX_MUSIC_OUT_BYTES = 2 * 1024 * 1024;    // size cap of the trimmed song embedded in every guest file
+const MAX_GUESTS_PER_DOWNLOAD = 30;           // guests per ZIP file (larger lists are split automatically)
 const IMG_COVER   = { maxDim:1600, quality:0.78 }; // cover photo compression
 const IMG_GALLERY = { maxDim:1200, quality:0.72 }; // pre-wedding photos compression
 
@@ -1069,33 +1437,40 @@ function compressImage(file, opts){
 function guestNameList(){
   return $("guestNamesFile").value.split("\n").map(n => n.trim()).filter(Boolean);
 }
+function chunkList(list, size){
+  const out = [];
+  for(let i = 0; i < list.length; i += size) out.push(list.slice(i, i + size));
+  return out;
+}
 function updateGuestCount(){
   const el = $("guestCount");
   if(!el) return;
   const n = guestNameList().length;
-  el.textContent = n + " / " + MAX_GUESTS_PER_DOWNLOAD + " នាក់";
-  el.style.color = n > MAX_GUESTS_PER_DOWNLOAD ? "#C0392B" : "";
-  el.style.fontWeight = n > MAX_GUESTS_PER_DOWNLOAD ? "700" : "";
-}
-function checkGuestLimit(names){
-  if(names.length > MAX_GUESTS_PER_DOWNLOAD){
-    $("genFilesStatus").textContent =
-      "ទាញយកបានតែ " + MAX_GUESTS_PER_DOWNLOAD + " នាក់ក្នុងមួយដងប៉ុណ្ណោះ (អ្នកបានបញ្ចូល " + names.length +
-      " នាក់)។ សូមកាត់ឈ្មោះលើស " + (names.length - MAX_GUESTS_PER_DOWNLOAD) +
-      " ចេញ ទាញយកក្រុមនេះសិន រួចបិទភ្ជាប់ឈ្មោះក្រុមបន្ទាប់ដើម្បីទាញយកម្តងទៀត";
-    return false;
-  }
-  return true;
+  el.textContent = n
+    ? n + " នាក់ (" + Math.ceil(n / MAX_GUESTS_PER_DOWNLOAD) + " ក្រុម ZIP)"
+    : "0 នាក់";
 }
 
 function safeFileName(name){
   return (name || "guest").trim().replace(/[^\w\u1780-\u17FF]+/g, "_").replace(/^_+|_+$/g, "") || "guest";
 }
 
-// ---- Personalized guest files: baked-in, zipped, no hosting needed ----
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+function downloadBlob(blob, fileName){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = fileName;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 15000);
+}
+
+// ---- Personalized guest files: baked-in, zipped in batches, no hosting needed ----
+let guestBusy = false;
 async function generateGuestFiles(){
+  if(guestBusy) return;
   const statusEl = $("genFilesStatus");
-  const names = $("guestNamesFile").value.split("\n").map(n => n.trim()).filter(Boolean);
+  const btn = $("genFilesBtn");
+  const names = guestNameList();
   state.guestNamesFileRaw = $("guestNamesFile").value;
   saveDraft();
 
@@ -1103,55 +1478,57 @@ async function generateGuestFiles(){
     statusEl.textContent = "សូមបញ្ចូលឈ្មោះភ្ញៀវយ៉ាងហោចណាស់ម្នាក់ម្នាក់ក្នុងមួយបន្ទាត់";
     return;
   }
-  if(!checkGuestLimit(names)) return;
   if(typeof JSZip === "undefined"){
     statusEl.textContent = "មិនអាចផ្ទុកម៉ូឌុល ZIP បាន សូមព្យាយាមម្តងទៀត ឬពិនិត្យការតភ្ជាប់អ៊ីនធឺណិត";
     return;
   }
-  statusEl.textContent = "កំពុងបង្កើតឯកសារ...";
 
-  const zip = new JSZip();
-  const usedNames = {};
-  names.forEach(name => {
-    const guestState = Object.assign({}, state, { __guestName: name });
-    const html = renderInvitation(guestState);
-    let base = safeFileName(name);
-    let finalName = base;
-    let n = 2;
-    while(usedNames[finalName]){ finalName = base + "-" + n; n++; }
-    usedNames[finalName] = true;
-    zip.file(finalName + ".html", html);
-  });
+  const batches = chunkList(names, MAX_GUESTS_PER_DOWNLOAD);
+  const total = batches.length;
+  const digits = Math.max(2, String(total).length);
+  const usedNames = {};            // shared across batches so duplicate names stay unique
+  guestBusy = true; btn.disabled = true;
 
   try{
-    const blob = await zip.generateAsync({ type:"blob" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = "guest-invitations.zip";
-    document.body.appendChild(a); a.click(); a.remove();
-    URL.revokeObjectURL(url);
-    statusEl.textContent = `បានទាញយក ${names.length} ឯកសារ ក្នុង ZIP មួយ — ស្រាយ (unzip) រួចផ្ញើឯកសារនីមួយៗទៅភ្ញៀវផ្ទាល់`;
+    for(let b = 0; b < total; b++){
+      statusEl.textContent = total > 1
+        ? `កំពុងបង្កើតក្រុមទី ${b + 1} / ${total} ...`
+        : "កំពុងបង្កើតឯកសារ...";
+      await sleep(30);             // let the page repaint between batches
+
+      const zip = new JSZip();
+      batches[b].forEach(name => {
+        const guestState = Object.assign({}, state, { __guestName: name });
+        const html = renderInvitation(guestState);
+        const base = safeFileName(name);
+        let finalName = base;
+        let n = 2;
+        while(usedNames[finalName]){ finalName = base + "-" + n; n++; }
+        usedNames[finalName] = true;
+        zip.file(finalName + ".html", html);
+      });
+
+      const blob = await zip.generateAsync({ type:"blob", compression:"DEFLATE", compressionOptions:{ level:5 } });
+      const suffix = total > 1
+        ? `-part-${String(b + 1).padStart(digits, "0")}-of-${String(total).padStart(digits, "0")}`
+        : "";
+      downloadBlob(blob, `guest-invitations${suffix}.zip`);
+      if(b < total - 1) await sleep(700);   // small gap so browsers accept back-to-back downloads
+    }
+    statusEl.textContent = total > 1
+      ? `បានទាញយក ${names.length} ឯកសារ ក្នុង ${total} ZIP — ពិនិត្យថា ZIP ទាំង ${total} ចូលក្នុងថត Downloads គ្រប់ (បើខ្វះ សូមអនុញ្ញាតការទាញយកច្រើនឯកសារក្នុង browser រួចចុចម្តងទៀត) បន្ទាប់មកស្រាយ (unzip) ហើយផ្ញើឯកសារនីមួយៗទៅភ្ញៀវផ្ទាល់`
+      : `បានទាញយក ${names.length} ឯកសារ ក្នុង ZIP មួយ — ស្រាយ (unzip) រួចផ្ញើឯកសារនីមួយៗទៅភ្ញៀវផ្ទាល់`;
   }catch(e){
     statusEl.textContent = "មានបញ្ហាកើតឡើងពេលបង្កើត ZIP សូមព្យាយាមម្តងទៀត";
+  }finally{
+    guestBusy = false; btn.disabled = false;
   }
 }
-$("genFilesBtn").addEventListener("click", () => {
-  const statusEl = $("genFilesStatus");
-  const names = $("guestNamesFile").value.split("\n").map(n => n.trim()).filter(Boolean);
-  state.guestNamesFileRaw = $("guestNamesFile").value;
-  saveDraft();
-  if(!names.length){
-    statusEl.textContent = "សូមបញ្ចូលឈ្មោះភ្ញៀវយ៉ាងហោចណាស់ម្នាក់ម្នាក់ក្នុងមួយបន្ទាត់";
-    return;
-  }
-  if(!checkGuestLimit(names)) return;
-  statusEl.textContent = "";
-  generateGuestFiles();
-});
+$("genFilesBtn").addEventListener("click", generateGuestFiles);
 
 function restoreGuestFilesUI(){
   $("guestNamesFile").value = state.guestNamesFileRaw || "";
-  $("guestNamesFile").addEventListener("input", updateGuestCount);
+  $("guestNamesFile").oninput = updateGuestCount;
   updateGuestCount();
 }
 
@@ -1168,10 +1545,16 @@ function getProfiles(){
   try{ return JSON.parse(localStorage.getItem(PROFILES_KEY) || "[]"); }catch(e){ return []; }
 }
 function setProfiles(list){
-  try{ localStorage.setItem(PROFILES_KEY, JSON.stringify(list)); }catch(e){}
+  try{ localStorage.setItem(PROFILES_KEY, JSON.stringify(list)); return true; }catch(e){ return false; }
+}
+function currentProfileDirty(){
+  if(!currentProfileId) return false;
+  const p = getProfiles().find(x => x.id === currentProfileId);
+  if(!p) return false;
+  try{ return JSON.stringify(normalizeState(p.state)) !== JSON.stringify(normalizeState(state)); }catch(e){ return false; }
 }
 function refreshAllBuildersFromState(){
-  buildThemePicker(); buildEffectPicker(); buildTimeline(); buildTimelineTemplates();
+  buildThemePicker(); buildCoverStylePicker(); buildTimeline(); buildTimelineTemplates();
   buildContacts(); buildPhotos(); buildCoverPhoto(); buildTemplateChips(); bindSimpleFields();
   restoreGuestFilesUI(); update();
 }
@@ -1202,7 +1585,7 @@ function saveCurrentProfile(){
   }
   profiles[idx].state = JSON.parse(JSON.stringify(state));
   profiles[idx].savedAt = Date.now();
-  setProfiles(profiles);
+  if(!setProfiles(profiles)){ statusEl.textContent = STORAGE_FULL_MSG; return false; }
   statusEl.textContent = `បានរក្សាទុក "${profiles[idx].name}" ជាថ្មី`;
 }
 function saveAsNewProfile(){
@@ -1213,30 +1596,34 @@ function saveAsNewProfile(){
   const profiles = getProfiles();
   const id = "p" + Date.now();
   profiles.push({ id, name: name.trim(), state: JSON.parse(JSON.stringify(state)), savedAt: Date.now() });
-  setProfiles(profiles);
+  if(!setProfiles(profiles)){ statusEl.textContent = STORAGE_FULL_MSG; return; }
   currentProfileId = id;
   try{ localStorage.setItem(CURRENT_PROFILE_KEY, id); }catch(e){}
   renderProfileSelect();
+  persistMusic();
   statusEl.textContent = `បានរក្សាទុកជាគម្រោងថ្មី "${name.trim()}"`;
 }
 function loadProfile(id){
   const statusEl = $("profileStatus");
+  if(id !== currentProfileId && currentProfileDirty()){
+    if(window.confirm("មានការកែប្រែមិនទាន់រក្សាទុកក្នុងគម្រោងបច្ចុប្បន្ន។\nOK = រក្សាទុកសិន រួចប្តូរ\nCancel = បោះបង់ការកែប្រែទាំងនោះ")) saveCurrentProfile();
+  }
   if(!id){
     currentProfileId = "";
     try{ localStorage.setItem(CURRENT_PROFILE_KEY, ""); }catch(e){}
     statusEl.textContent = "";
+    persistMusic();
     return;
   }
   const profiles = getProfiles();
   const p = profiles.find(x => x.id === id);
   if(!p) return;
-  state = Object.assign(JSON.parse(JSON.stringify(defaultState)), JSON.parse(JSON.stringify(p.state)));
-  state.photos = (state.photos || []).filter(Boolean);
-  state.photoNames = state.photoNames || [];
+  state = normalizeState(p.state);
   currentProfileId = id;
   try{ localStorage.setItem(CURRENT_PROFILE_KEY, id); }catch(e){}
   saveDraft();
   refreshAllBuildersFromState();
+  loadMusicForCurrent();
   statusEl.textContent = `កំពុងកែសម្រួល "${p.name}"`;
 }
 function deleteCurrentProfile(){
@@ -1246,48 +1633,382 @@ function deleteCurrentProfile(){
   const p = profiles.find(x => x.id === currentProfileId);
   if(!p) return;
   if(!window.confirm(`លុបគម្រោង "${p.name}" ចោល? សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ`)) return;
+  const deletedId = currentProfileId;
   setProfiles(profiles.filter(x => x.id !== currentProfileId));
+  musicStoreOp("readwrite", st => st.delete(deletedId)).catch(() => {});
   currentProfileId = "";
   try{ localStorage.setItem(CURRENT_PROFILE_KEY, ""); }catch(e){}
   renderProfileSelect();
+  persistMusic();
   statusEl.textContent = `បានលុបគម្រោង "${p.name}"`;
 }
+function exportCurrentProfile(){
+  const statusEl = $("profileStatus");
+  const profiles = getProfiles();
+  const p = profiles.find(x => x.id === currentProfileId);
+  const name = p ? p.name : ([state.groomName, state.brideName].filter(Boolean).join(" & ") || "draft");
+  const payload = {
+    app: "wedding-invitation-builder-profile",
+    version: 1,
+    name,
+    exportedAt: Date.now(),
+    state: JSON.parse(JSON.stringify(state))
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type:"application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = safeFileName(name) + "-profile.json";
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  statusEl.textContent = `បាននាំចេញគម្រោង "${name}" ជាឯកសារ .json — ផ្ញើ/រក្សាទុកសម្រាប់ប្រើលើ device ផ្សេង${musicAsset ? " (ចម្រៀងមិនរួមជាមួយឯកសារនេះទេ ត្រូវជ្រើសរើសម្តងទៀតលើ device ថ្មី)" : ""}`;
+}
+function importProfileFromFile(file){
+  const statusEl = $("profileStatus");
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try{
+      const payload = JSON.parse(ev.target.result);
+      if(!payload || payload.app !== "wedding-invitation-builder-profile" || !payload.state){
+        statusEl.textContent = "ឯកសារនេះមិនត្រឹមត្រូវទេ (ត្រូវជាឯកសារ .json ដែលបាននាំចេញពីកម្មវិធីនេះ)";
+        return;
+      }
+      const profiles = getProfiles();
+      const id = "p" + Date.now();
+      const name = String(payload.name || "គម្រោងបាននាំចូល").slice(0, 80);
+      const mergedState = normalizeState(payload.state);
+      profiles.push({ id, name, state: mergedState, savedAt: Date.now() });
+      if(!setProfiles(profiles)){ statusEl.textContent = STORAGE_FULL_MSG; return; }
+      renderProfileSelect();
+      loadProfile(id);
+      statusEl.textContent = `បាននាំចូលគម្រោង "${name}" ជោគជ័យ`;
+    }catch(err){
+      statusEl.textContent = "មិនអាចអានឯកសារនេះបានទេ";
+    }
+  };
+  reader.readAsText(file);
+}
+$("profileExportBtn").addEventListener("click", exportCurrentProfile);
+$("profileImportBtn").addEventListener("click", () => $("profileImportFile").click());
+$("profileImportFile").addEventListener("change", (e) => {
+  const file = e.target.files && e.target.files[0];
+  if(file) importProfileFromFile(file);
+  e.target.value = "";
+});
 $("profileSelect").addEventListener("change", e => loadProfile(e.target.value));
 $("profileSaveBtn").addEventListener("click", saveCurrentProfile);
 $("profileSaveAsBtn").addEventListener("click", saveAsNewProfile);
 $("profileDeleteBtn").addEventListener("click", deleteCurrentProfile);
 
 // ---------------------------------------------------------------------
-// Theme preview pack — one HTML per theme, same content, so a client
-// can browse every look before staff commit to the guest-copy batch.
+// Background song — stored per project in IndexedDB (too big for localStorage).
+// Not part of the exported .json profile.
 // ---------------------------------------------------------------------
-async function generateThemePreviewPack(){
-  const statusEl = $("themePreviewStatus");
-  if(typeof JSZip === "undefined"){
-    statusEl.textContent = "មិនអាចផ្ទុកម៉ូឌុល ZIP បាន សូមព្យាយាមម្តងទៀត ឬពិនិត្យការតភ្ជាប់អ៊ីនធឺណិត";
-    return;
-  }
-  statusEl.textContent = "កំពុងបង្កើតគំរូគ្រប់ទម្រង់...";
-  const zip = new JSZip();
-  const coupleName = safeFileName([state.groomName, state.brideName].filter(Boolean).join("-") || "preview");
-  Object.keys(THEMES).forEach(key => {
-    const previewState = Object.assign({}, state, { theme: key });
-    const html = renderInvitation(previewState);
-    zip.file(`${coupleName}-${key}-${THEMES[key].label}.html`, html);
+const MUSIC_DB = "wib-music", MUSIC_STORE = "tracks";
+function musicDb(){
+  return new Promise((resolve, reject) => {
+    if(!window.indexedDB){ reject(new Error("IndexedDB unavailable")); return; }
+    const req = indexedDB.open(MUSIC_DB, 1);
+    req.onupgradeneeded = () => req.result.createObjectStore(MUSIC_STORE);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
   });
+}
+async function musicStoreOp(mode, fn){
+  const db = await musicDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(MUSIC_STORE, mode);
+    const req = fn(tx.objectStore(MUSIC_STORE));
+    tx.oncomplete = () => { db.close(); resolve(req ? req.result : undefined); };
+    tx.onerror = tx.onabort = () => { db.close(); reject(tx.error); };
+  });
+}
+const musicKey = () => currentProfileId || "draft";
+async function persistMusic(){
   try{
-    const blob = await zip.generateAsync({ type:"blob" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = `${coupleName}-preview-pack.zip`;
-    document.body.appendChild(a); a.click(); a.remove();
-    URL.revokeObjectURL(url);
-    statusEl.textContent = `បានទាញយកគំរូទាំង ${Object.keys(THEMES).length} ទម្រង់ — ផ្ញើឲ្យអតិថិជនជ្រើសរើសមុននឹងធ្វើច្បាប់ចម្លងភ្ញៀវ`;
+    if(musicAsset) await musicStoreOp("readwrite", st => st.put(musicAsset, musicKey()));
+    else await musicStoreOp("readwrite", st => st.delete(musicKey()));
   }catch(e){
-    statusEl.textContent = "មានបញ្ហាកើតឡើងពេលបង្កើត ZIP សូមព្យាយាមម្តងទៀត";
+    const st = $("musicStatus");
+    if(st && musicAsset) st.textContent += " (មិនអាចរក្សាទុកចម្រៀងក្នុង browser នេះបានទេ — ត្រូវជ្រើសរើសម្តងទៀតពេលបើកថ្មី)";
   }
 }
-$("themePreviewBtn").addEventListener("click", generateThemePreviewPack);
+async function loadMusicForCurrent(){
+  musicSource = null;
+  try{ musicAsset = (await musicStoreOp("readonly", st => st.get(musicKey()))) || null; }
+  catch(e){ musicAsset = null; }
+  refreshMusicUI();
+  update();
+}
+
+function fmtTime(sec){
+  sec = Math.max(0, Math.round(sec));
+  return Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0");
+}
+
+function refreshMusicUI(autoplay){
+  const prev = $("musicPreview"), st = $("musicStatus");
+  if(!prev) return;
+  const rm = $("musicRemoveBtn"), startField = $("musicStartField");
+  try{ prev.pause(); }catch(e){}
+  if(musicAsset){
+    prev.src = musicAsset.dataUrl;
+    prev.style.display = "block";
+    rm.style.display = "";
+    let line = musicAsset.name;
+    const from = musicAsset.startSeconds > 0 ? `ចាប់ពី ${fmtTime(musicAsset.startSeconds)} · ` : "";
+    if(musicAsset.seconds) line += ` — ${from}រយៈពេល ${fmtTime(musicAsset.seconds)} (${fmtSize(musicAsset.size)})`;
+    else line += ` — ${fmtSize(musicAsset.size)}`;
+    if(musicAsset.origSeconds && musicAsset.seconds && musicAsset.origSeconds - musicAsset.seconds > 1){
+      line += ` · កាត់ពី ${fmtTime(musicAsset.origSeconds)} (${fmtSize(musicAsset.origSize)})`;
+    }
+    // start picker: only while the original file is still in memory (i.e. picked in this session)
+    if(musicSource && musicAsset.origSeconds){
+      const maxStart = Math.max(0, Math.floor(musicAsset.origSeconds - 5));
+      $("musicStartRange").max = String(maxStart);
+      $("musicStartRange").value = String(Math.min(maxStart, Math.round(musicAsset.startSeconds || 0)));
+      $("musicStartTxt").value = fmtTime(musicAsset.startSeconds || 0);
+      startField.style.display = "";
+    }else{
+      startField.style.display = "none";
+    }
+    if(autoplay){ try{ const pr = prev.play(); if(pr && pr.catch) pr.catch(() => {}); }catch(e){} }
+    st.textContent = line + `\nឯកសារភ្ញៀវនីមួយៗនឹងធំបន្ថែមប្រហែល ${fmtSize(musicAsset.dataUrl.length)}`;
+    st.style.whiteSpace = "pre-line";
+  }else{
+    prev.removeAttribute("src");
+    prev.style.display = "none";
+    rm.style.display = "none"; startField.style.display = "none";
+    st.textContent = "មិនទាន់មានចម្រៀងទេ";
+  }
+}
+
+// ---- MP3 trimming: no re-encoding. Keeps whole frames from `startSeconds`, drops ID3 tags / album art. ----
+// Returns { data, seconds, totalSeconds } or null when the bytes are not a Layer III MP3 stream.
+function trimMp3(u8, maxSeconds, maxBytes, startSeconds){
+  startSeconds = startSeconds > 0 ? startSeconds : 0;
+  const len = u8.length;
+  const BR1 = [0,32,40,48,56,64,80,96,112,128,160,192,224,256,320];
+  const BR2 = [0,8,16,24,32,40,48,56,64,80,96,112,128,144,160];
+  const SR = { 3:[44100,48000,32000], 2:[22050,24000,16000], 0:[11025,12000,8000] };
+
+  function header(p){
+    if(p + 4 > len || u8[p] !== 0xFF || (u8[p+1] & 0xE0) !== 0xE0) return null;
+    const ver = (u8[p+1] >> 3) & 3, layer = (u8[p+1] >> 1) & 3;
+    if(ver === 1 || layer !== 1) return null;             // reserved version, or not Layer III
+    const bi = u8[p+2] >> 4, si = (u8[p+2] >> 2) & 3;
+    if(bi === 0 || bi === 15 || si === 3) return null;
+    const rate = SR[ver][si], kbps = (ver === 3 ? BR1 : BR2)[bi], pad = (u8[p+2] >> 1) & 1;
+    const size = Math.floor((ver === 3 ? 144000 : 72000) * kbps / rate) + pad;
+    return { ver, rate, kbps, size, samples: ver === 3 ? 1152 : 576,
+             mono: (u8[p+3] >> 6) === 3, crc: (u8[p+1] & 1) === 0 };
+  }
+  function isFrame(p){
+    const h = header(p);
+    if(!h || p + h.size > len) return null;
+    const q = p + h.size;
+    // next frame must follow, unless this is the last frame (only trailing tags left)
+    if(q === len || len - q <= 300 || header(q)) return h;
+    return null;
+  }
+  function isInfoFrame(p, h){          // Xing / Info / VBRI header frame (metadata, not audio)
+    const at = p + 4 + (h.crc ? 2 : 0) + (h.ver === 3 ? (h.mono ? 17 : 32) : (h.mono ? 9 : 17));
+    const tag = String.fromCharCode(u8[at] || 0, u8[at+1] || 0, u8[at+2] || 0, u8[at+3] || 0);
+    const v = String.fromCharCode(u8[p+36] || 0, u8[p+37] || 0, u8[p+38] || 0, u8[p+39] || 0);
+    return tag === "Xing" || tag === "Info" || v === "VBRI";
+  }
+
+  let pos = 0;
+  if(len > 10 && u8[0] === 0x49 && u8[1] === 0x44 && u8[2] === 0x33){   // ID3v2 (may hold album art)
+    pos = 10 + (((u8[6] & 0x7F) << 21) | ((u8[7] & 0x7F) << 14) | ((u8[8] & 0x7F) << 7) | (u8[9] & 0x7F));
+    if(u8[5] & 0x10) pos += 10;
+  }
+
+  // MP3 frames borrow bits from the frames just before them (bit reservoir). When starting mid-song we
+  // begin a few frames early, so the decoder has warmed up by the time the wanted start is reached.
+  const PREROLL = 4;
+  let recent = [];
+  let start = -1, cut = -1, kept = 0, total = 0, end = 0, frames = 0, elapsed = 0, seenFirst = false;
+  while(pos + 4 <= len){
+    const h = isFrame(pos);
+    if(!h){ pos++; continue; }                       // resync after junk bytes
+    if(!seenFirst){
+      seenFirst = true;
+      if(isInfoFrame(pos, h)){ pos += h.size; continue; }
+    }
+    const sec = h.samples / h.rate;
+    if(start < 0){
+      if(elapsed >= startSeconds){ start = recent.length ? recent[0] : pos; }
+      else{
+        recent.push(pos); if(recent.length > PREROLL) recent.shift();
+        elapsed += sec; total += sec; pos += h.size; end = pos; frames++;
+        continue;
+      }
+    }
+    if(cut < 0 && (kept + sec > maxSeconds || (pos + h.size - start) > maxBytes)) cut = pos;
+    if(cut < 0) kept += sec;
+    total += sec;
+    pos += h.size;
+    end = pos;
+    frames++;
+  }
+  if(frames === 0 || start < 0) return null;
+  if(cut < 0) cut = end;
+  if(cut <= start) return null;
+  return { data: u8.subarray(start, cut), seconds: kept, totalSeconds: total };
+}
+
+function readAsArrayBuffer(file){
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+    r.readAsArrayBuffer(file);
+  });
+}
+function blobToDataUrl(blob){
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+    r.readAsDataURL(blob);
+  });
+}
+function guessAudioMime(name, type){
+  if(type && type.indexOf("audio/") === 0) return type;
+  const ext = (name.split(".").pop() || "").toLowerCase();
+  return ({ mp3:"audio/mpeg", m4a:"audio/mp4", aac:"audio/aac", wav:"audio/wav", ogg:"audio/ogg", oga:"audio/ogg", opus:"audio/ogg" })[ext] || "audio/mpeg";
+}
+
+let musicSource = null;    // the file as picked (kept in memory only), so length / start can be changed without re-picking
+function parseTime(str){
+  const parts = String(str).trim().split(":").map(x => Number(x));
+  if(!parts.length || parts.length > 3 || parts.some(x => !isFinite(x) || x < 0)) return null;
+  return parts.reduce((acc, x) => acc * 60 + x, 0);
+}
+function musicMaxSeconds(){
+  const v = Number($("musicMaxSel").value);
+  return v > 0 ? v : Infinity;
+}
+
+async function buildMusicAsset(src, startSeconds, autoplay){
+  const st = $("musicStatus");
+  st.style.whiteSpace = "";
+  const isMp3 = /\.mp3$/i.test(src.name) || src.type === "audio/mpeg";
+  let start = startSeconds > 0 ? startSeconds : 0;
+  if(src.totalSeconds) start = Math.min(start, Math.max(0, Math.floor(src.totalSeconds - 5)));   // keep at least a few seconds
+  let trimmed = isMp3 ? trimMp3(src.u8, musicMaxSeconds(), MAX_MUSIC_OUT_BYTES, start) : null;
+  if(!trimmed && isMp3 && start > 0){ start = 0; trimmed = trimMp3(src.u8, musicMaxSeconds(), MAX_MUSIC_OUT_BYTES, 0); }
+  if(trimmed) src.totalSeconds = trimmed.totalSeconds;
+
+  let data, mime, seconds = null, origSeconds = null;
+  if(trimmed){
+    data = trimmed.data; mime = "audio/mpeg";
+    seconds = trimmed.seconds; origSeconds = trimmed.totalSeconds;
+  }else{
+    if(src.size > MAX_MUSIC_OUT_BYTES){
+      st.textContent = `ឯកសារនេះធំពេក (${fmtSize(src.size)}) ហើយមិនអាចកាត់ស្វ័យប្រវត្តិបានទេ — ប្រព័ន្ធកាត់បានតែ MP3។ សូមបម្លែងជា MP3 ជាមុន ឬប្រើឯកសារតូចជាង ${fmtSize(MAX_MUSIC_OUT_BYTES)}`;
+      return false;
+    }
+    data = src.u8; mime = guessAudioMime(src.name, src.type);
+  }
+
+  const dataUrl = await blobToDataUrl(new Blob([data], { type: mime }));
+  musicAsset = { name: src.name, size: data.length, origSize: src.size, seconds, origSeconds, startSeconds: trimmed ? start : 0, dataUrl };
+  musicSource = src;
+  try{ sessionStorage.removeItem("wib-cover-seen"); }catch(e){}
+  refreshMusicUI(autoplay);
+  persistMusic();
+  update();
+  return true;
+}
+
+async function importMusic(file){
+  const st = $("musicStatus");
+  st.style.whiteSpace = "";
+  if(!(file.type.indexOf("audio/") === 0 || /\.(mp3|m4a|aac|wav|ogg|oga|opus)$/i.test(file.name))){
+    st.textContent = "សូមជ្រើសរើសឯកសារសំឡេង (MP3, M4A, WAV …)";
+    return;
+  }
+  if(file.size > MAX_MUSIC_INPUT_BYTES){
+    st.textContent = `ឯកសារធំពេក (${fmtSize(file.size)}) — សូមជ្រើសរើសឯកសារតូចជាង ${fmtSize(MAX_MUSIC_INPUT_BYTES)}`;
+    return;
+  }
+  st.textContent = "កំពុងកាត់ចម្រៀង...";
+  try{
+    const buf = await readAsArrayBuffer(file);
+    await buildMusicAsset({ name: file.name, type: file.type, size: file.size, u8: new Uint8Array(buf) }, 0, false);
+  }catch(e){
+    st.textContent = "មិនអាចអានឯកសារនេះបានទេ";
+  }
+}
+try{ const savedMax = localStorage.getItem("wib-music-max"); if(savedMax !== null) $("musicMaxSel").value = savedMax; }catch(e){}
+if(!$("musicMaxSel").value) $("musicMaxSel").value = "60";
+$("musicMaxSel").addEventListener("change", async () => {
+  try{ localStorage.setItem("wib-music-max", $("musicMaxSel").value); }catch(e){}
+  if(musicSource){ await buildMusicAsset(musicSource, musicAsset ? musicAsset.startSeconds : 0, false); }
+  else if(musicAsset){ $("musicStatus").textContent += "\n(ជ្រើសរើសឯកសារម្តងទៀត ដើម្បីកាត់តាមរយៈពេលថ្មី)"; }
+});
+function buildCoverStylePicker(){
+  const grid = $("coverStyleGrid");
+  const cur = COVER_STYLES[state.openStyle] ? state.openStyle : "door";
+  grid.innerHTML = Object.keys(COVER_STYLES).map(key => {
+    const c = COVER_STYLES[key];
+    return `<div class="theme-card${cur === key ? " active" : ""}" data-cs="${key}" title="${c.label}" role="button" tabindex="0">
+      <div class="cs-icon">${c.icon}</div>
+      <span>${c.label}</span>
+    </div>`;
+  }).join("");
+  grid.querySelectorAll(".theme-card").forEach(card => {
+    const pick = () => {
+      state.openStyle = card.dataset.cs;
+      try{ sessionStorage.removeItem("wib-cover-seen"); }catch(e){}   // show the new style in the preview straight away
+      buildCoverStylePicker();
+      update();
+    };
+    card.addEventListener("click", pick);
+    card.addEventListener("keydown", e => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); pick(); } });
+  });
+  $("coverAlways").checked = !!state.coverAlways;
+  refreshMusicUI();
+}
+$("coverAlways").addEventListener("change", e => {
+  state.coverAlways = e.target.checked;
+  try{ sessionStorage.removeItem("wib-cover-seen"); }catch(err){}
+  refreshMusicUI();
+  update();
+});
+
+async function setMusicStart(seconds){
+  if(!musicSource || !musicAsset) return;
+  await buildMusicAsset(musicSource, Math.max(0, Math.round(seconds)), true);
+}
+$("musicStartRange").addEventListener("input", () => { $("musicStartTxt").value = fmtTime(Number($("musicStartRange").value)); });
+$("musicStartRange").addEventListener("change", () => setMusicStart(Number($("musicStartRange").value)));
+$("musicStartTxt").addEventListener("change", () => {
+  const t = parseTime($("musicStartTxt").value);
+  if(t === null){ $("musicStartTxt").value = fmtTime(musicAsset ? musicAsset.startSeconds || 0 : 0); return; }
+  setMusicStart(t);
+});
+$("musicStartBeginBtn").addEventListener("click", () => setMusicStart(0));
+$("musicStartEndBtn").addEventListener("click", () => {
+  if(!musicAsset || !musicAsset.origSeconds) return;
+  // longest piece allowed (chosen length and the size cap), taken so that it ends exactly at the end of the song
+  const bytesPerSec = musicAsset.size / Math.max(1, musicAsset.seconds);
+  const longest = Math.min(musicMaxSeconds(), MAX_MUSIC_OUT_BYTES / bytesPerSec * 0.98, musicAsset.origSeconds);
+  setMusicStart(Math.ceil(musicAsset.origSeconds - longest));
+});
+$("musicPickBtn").addEventListener("click", () => $("musicFile").click());
+$("musicFile").addEventListener("change", e => {
+  const file = e.target.files && e.target.files[0];
+  e.target.value = "";
+  if(file) importMusic(file);
+});
+$("musicRemoveBtn").addEventListener("click", () => {
+  musicAsset = null; musicSource = null;
+  refreshMusicUI();
+  persistMusic();
+  update();
+});
 
 function buildTemplateChips(){
   const specs = [
@@ -1402,21 +2123,21 @@ function bindSimpleFields(){
   Object.entries(map).forEach(([id,key]) => {
     const el = $(id);
     el.value = state[key] || "";
-    el.addEventListener("input", () => { state[key] = el.value; scheduleUpdate(); });
+    el.oninput = () => { state[key] = el.value; scheduleUpdate(); };   // "oninput" (not addEventListener) so re-binding after a profile switch does not stack handlers
   });
 }
 
 function update(){
   saveDraft();
-  $("frame").srcdoc = renderInvitation(state);
+  $("frame").srcdoc = renderInvitation(Object.assign({}, state, { __preview:true }));
 }
 
 let updateTimer = null;
 function scheduleUpdate(){
-  saveDraft();
+  saveDraftSoon();
   if(updateTimer) clearTimeout(updateTimer);
   updateTimer = setTimeout(() => {
-    $("frame").srcdoc = renderInvitation(state);
+    $("frame").srcdoc = renderInvitation(Object.assign({}, state, { __preview:true }));
   }, 450);
 }
 
@@ -1451,6 +2172,7 @@ try{
 }catch(e){}
 resizer.addEventListener("mousedown", () => {
   resizing = true;
+  $("frame").style.pointerEvents = "none";
   resizer.classList.add("active");
   document.body.style.userSelect = "none";
 });
@@ -1461,6 +2183,7 @@ window.addEventListener("mousemove", e => {
 window.addEventListener("mouseup", () => {
   if(!resizing) return;
   resizing = false;
+  $("frame").style.pointerEvents = "";
   resizer.classList.remove("active");
   document.body.style.userSelect = "";
 });
@@ -1472,7 +2195,7 @@ window.addEventListener("touchmove", e => {
 window.addEventListener("touchend", () => { resizing = false; });
 
 buildThemePicker();
-buildEffectPicker();
+buildCoverStylePicker();
 buildTimeline();
 buildTimelineTemplates();
 buildContacts();
@@ -1483,6 +2206,8 @@ bindSimpleFields();
 restoreGuestFilesUI();
 renderProfileSelect();
 update();
+refreshMusicUI();
+loadMusicForCurrent();
 
 if("serviceWorker" in navigator){
   window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(()=>{}); });
