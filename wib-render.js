@@ -427,11 +427,12 @@ if(ocEl){
 // variables): a background-image data URI is a separate mini-document that can't see the page's CSS, so
 // the exact colour has to be baked in when the invitation is generated.
 // ---- Flower shapes: 5 species drawn as raw path data (no <use>, so each mini-SVG document works standalone) ----
+// ---- Flower shapes (5 species — same artwork, reused as a background watermark instead of a border) ----
 const KF_PETAL_PATH  = "M0,0 C-5,-8 -5,-18 0,-26 C5,-18 5,-8 0,0 Z";
 const KF_RPETAL_PATH = "M0,0 C-3,-10 -2,-24 0,-32 C2,-24 3,-10 0,0 Z";
 const KF_LEAF_PATH   = "M0,0 C10,-4 18,-14 14,-26 C4,-20 -4,-8 0,0 Z";
 
-function kfLotus(a1, bg){ // ផ្កាឈូក
+function kfLotus(a1, bg){
   return `<path d="${KF_PETAL_PATH}" fill="${a1}"/>
 <path d="${KF_PETAL_PATH}" fill="${a1}" opacity=".9" transform="rotate(35)"/>
 <path d="${KF_PETAL_PATH}" fill="${a1}" opacity=".9" transform="rotate(-35)"/>
@@ -439,15 +440,15 @@ function kfLotus(a1, bg){ // ផ្កាឈូក
 <path d="${KF_PETAL_PATH}" fill="${a1}" opacity=".75" transform="rotate(-70)"/>
 <circle cx="0" cy="-2" r="2.6" fill="${bg}" stroke="${a1}" stroke-width="1"/>`;
 }
-function kfRomduol(a2, bg){ // ផ្ការំដួល
+function kfRomduol(a2, bg){
   return [0,72,144,216,288].map(d => `<path d="${KF_RPETAL_PATH}" fill="${a2}" transform="rotate(${d})"/>`).join("")
     + `<circle r="2.6" fill="${bg}"/>`;
 }
-function kfChampa(a1, a2){ // ផ្កាចំប៉ី
+function kfChampa(a1, a2){
   return [0,70,140,210,280].map((d,i) => `<path d="${KF_PETAL_PATH}" fill="${a1}" opacity="${(1-i*0.08).toFixed(2)}" transform="rotate(${d}) scale(1.3,0.85)"/>`).join("")
     + `<circle r="1.8" fill="${a2}"/>`;
 }
-function kfReachpreuk(a1){ // ផ្ការាជព្រឹក្ស
+function kfReachpreuk(a1){
   return `<path d="M0,0 C2,10 2,20 0,30" fill="none" stroke="${a1}" stroke-width="1"/>
 <circle cx="0" cy="4" r="3" fill="${a1}"/>
 <circle cx="1.3" cy="12" r="2.5" fill="${a1}" opacity=".9"/>
@@ -455,7 +456,7 @@ function kfReachpreuk(a1){ // ផ្ការាជព្រឹក្ស
 <circle cx="1" cy="25" r="1.7" fill="${a1}" opacity=".7"/>
 <circle cx="0" cy="30" r="1.3" fill="${a1}" opacity=".6"/>`;
 }
-function kfKngork(a1){ // ផ្កាក្ងោក
+function kfKngork(a1){
   return [0,35,-35,70,-70].map(d => `<path d="${KF_PETAL_PATH}" fill="${a1}" opacity=".85" transform="rotate(${d}) scale(1.05,1.5)"/>`).join("")
     + `<line x1="0" y1="0" x2="3" y2="-32" stroke="${a1}" stroke-width=".8"/>
 <line x1="0" y1="0" x2="-3" y2="-30" stroke="${a1}" stroke-width=".8"/>
@@ -465,7 +466,6 @@ function kfFlower(idx, a1, a2, bg){
   const fns = [() => kfLotus(a1,bg), () => kfRomduol(a2,bg), () => kfChampa(a1,a2), () => kfReachpreuk(a1), () => kfKngork(a2)];
   return fns[((idx % fns.length) + fns.length) % fns.length]();
 }
-// A small ornament: a few leaves plus a main flower and a smaller accent flower
 function kfSprig(a1, a2, bg, seed){
   const leaves = [-40,40,100,170].map((ang,i) =>
     `<path d="${KF_LEAF_PATH}" fill="${a1}" opacity=".5" transform="rotate(${ang}) translate(0,${2+i*2}) scale(${(0.9+((seed+i)%3)*0.15).toFixed(2)})"/>`
@@ -475,70 +475,49 @@ function kfSprig(a1, a2, bg, seed){
     + `<g transform="translate(9,6) scale(.55) rotate(15)">${kfFlower(seed+2, a1, a2, bg)}</g>`;
 }
 
-// ---- Corner ornaments (fixed 90x90 box; CSS flips the artwork for the other 3 corners) ----
-function kfCornerBranch(a1,a2,bg){ // មែកទ្រេត
-  return `<path d="M4,50 C4,26 26,4 50,4" fill="none" stroke="${a1}" stroke-width="1.4" opacity=".6"/>
-<g transform="translate(10,10) scale(1.1)">${kfSprig(a1,a2,bg,0)}</g>
-<g transform="translate(28,20) scale(.75) rotate(20)">${kfSprig(a1,a2,bg,2)}</g>
-<g transform="translate(44,34) scale(.5) rotate(-15)">${kfSprig(a1,a2,bg,4)}</g>`;
-}
-function kfCornerWrap(a1,a2,bg){ // ព័ទ្ធពេញ (corner accent)
-  return `<path d="M2,60 C2,26 26,2 60,2" fill="none" stroke="${a1}" stroke-width="1.2" opacity=".5"/>
-<g transform="translate(20,20) scale(.9)">${kfSprig(a1,a2,bg,1)}</g>`;
-}
-
-// ---- Edge tiles (repeat along the border; independent of screen size) ----
-function kfGarlandTile(a1,a2,bg){ // ព័ទ្ធពេញ/កម្រងក្រោម — horizontal wavy chain
-  return `<path d="M0,10 Q15,22 30,10" fill="none" stroke="${a1}" stroke-width="1.2" opacity=".55"/>
-<g transform="translate(15,14) scale(.55)">${kfSprig(a1,a2,bg,2)}</g>`;
-}
-function kfSideTile(a1,a2,bg){ // ព័ទ្ធពេញ/សងខាង — vertical winding vine
-  return `<path d="M15,0 C6,10 6,20 15,30 C24,40 24,50 15,60" fill="none" stroke="${a1}" stroke-width="1.3" opacity=".55"/>
-<g transform="translate(15,30) scale(.45)">${kfSprig(a1,a2,bg,1)}</g>`;
-}
-function kfScatterTile(a1,a2,bg,seed){ // កក្រាយសេរី — loose, off-center, low density
-  return `<g transform="translate(${10+seed*3},${14-seed*2}) scale(${(0.35+(seed%3)*0.1).toFixed(2)}) rotate(${seed*23})">${kfSprig(a1,a2,bg,seed)}</g>`;
-}
-
-function kfCornerSvg(inner){
-  return `<svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
-}
-function kfTileUri(inner, w, h){
+function kfWatermarkTileUri(inner, w, h){
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${inner}</svg>`;
   return "data:image/svg+xml," + encodeURIComponent(svg);
 }
 
+// Each style = one seamlessly-tiling pattern + a slow drift (dx/dy exactly one tile length, so the loop never jumps)
 function buildKbachFrameOverlay(styleId, t){
   if(!styleId || styleId === "none" || !hasOwn(KBACH_FRAME_STYLES, styleId)) return "";
   const a1 = t.accent1, a2 = t.accent2, bg = t.bg;
-  const corners = inner => ["tl","tr","bl","br"].map(pos =>
-    `<div class="kbach-corner ${pos}" aria-hidden="true">${kfCornerSvg(inner)}</div>`).join("");
-  const oneCorner = (pos, inner) =>
-    `<div class="kbach-corner ${pos}" aria-hidden="true">${kfCornerSvg(inner)}</div>`;
-  const edges = (inner, w, h, sides, full) => sides.map(side =>
-    `<div class="kbach-edge ${side}${full ? " full" : ""}" style="background-image:url('${kfTileUri(inner, w, h)}');background-size:${w}px ${h}px;" aria-hidden="true"></div>`).join("");
-  const line = (inset, width, color) => `<div class="kbach-line" style="inset:${inset}px;border:${width}px solid ${color};" aria-hidden="true"></div>`;
+  let w = 140, h = 140, dx = 140, dy = 140, dur = 55, inner = "";
 
-  let html = "";
-  if(styleId === "diagbranch"){
-    html += line(9, 1, a1);
-    html += corners(kfCornerBranch(a1,a2,bg));
-  } else if(styleId === "fullwrap"){
-    html += line(9, 2, a1) + line(15, 1, a2);
-    html += corners(kfCornerWrap(a1,a2,bg));
-    html += edges(kfGarlandTile(a1,a2,bg), 30, 30, ["top","bottom"]);
-    html += edges(kfSideTile(a1,a2,bg), 30, 60, ["left","right"]);
-  } else if(styleId === "onecorner"){
-    html += oneCorner("br", kfCornerBranch(a1,a2,bg));
-  } else if(styleId === "bottomgarland"){
-    html += edges(kfGarlandTile(a1,a2,bg), 30, 30, ["bottom"], true);
-  } else if(styleId === "sidebranch"){
-    html += edges(kfSideTile(a1,a2,bg), 30, 60, ["left","right"], true);
-  } else if(styleId === "scatter"){
-    html += edges(kfScatterTile(a1,a2,bg,0), 70, 70, ["top","bottom"], true);
-    html += edges(kfScatterTile(a1,a2,bg,1), 70, 70, ["left","right"], true);
+  if(styleId === "diagbranch"){          // ស្តើង — drift ដេក
+    w = h = 150; dx = 150; dy = 150; dur = 60;
+    inner = `<g transform="translate(30,30) rotate(-15) scale(.7)">${kfSprig(a1,a2,bg,0)}</g>
+<g transform="translate(105,95) rotate(20) scale(.55)">${kfSprig(a1,a2,bg,3)}</g>`;
+  } else if(styleId === "fullwrap"){     // ក្រាស់ — mix ច្រើនប្រភេទ
+    w = h = 110; dx = 110; dy = 110; dur = 50;
+    inner = `<g transform="translate(20,20) scale(.6)">${kfSprig(a1,a2,bg,1)}</g>
+<g transform="translate(75,35) rotate(40) scale(.45)">${kfSprig(a1,a2,bg,3)}</g>
+<g transform="translate(45,80) rotate(-25) scale(.5)">${kfSprig(a1,a2,bg,4)}</g>`;
+  } else if(styleId === "onecorner"){    // ស្តើងបំផុត — tile ធំ
+    w = h = 220; dx = 220; dy = 220; dur = 75;
+    inner = `<g transform="translate(40,50) rotate(10) scale(.6)">${kfSprig(a1,a2,bg,2)}</g>`;
+  } else if(styleId === "bottomgarland"){ // ហូរដេក
+    w = 130; h = 60; dx = 130; dy = 0; dur = 40;
+    inner = `<path d="M0,30 Q32,46 65,30 T130,30" fill="none" stroke="${a1}" stroke-width="1" opacity=".5"/>
+<g transform="translate(20,30) scale(.5)">${kfSprig(a1,a2,bg,2)}</g>
+<g transform="translate(95,30) scale(.45) rotate(20)">${kfSprig(a1,a2,bg,4)}</g>`;
+  } else if(styleId === "sidebranch"){    // ហូរឈរ
+    w = 60; h = 130; dx = 0; dy = 130; dur = 40;
+    inner = `<path d="M30,0 Q46,32 30,65 T30,130" fill="none" stroke="${a1}" stroke-width="1" opacity=".5"/>
+<g transform="translate(30,20) scale(.5)">${kfSprig(a1,a2,bg,1)}</g>
+<g transform="translate(30,95) scale(.45) rotate(-20)">${kfSprig(a1,a2,bg,3)}</g>`;
+  } else if(styleId === "scatter"){       // កក្រាយសេរី — drift ដេក
+    w = h = 180; dx = 180; dy = 180; dur = 70;
+    inner = [0,1,2].map(i => {
+      const x = 20 + i*55, y = 30 + (i%2)*90;
+      return `<g transform="translate(${x},${y}) rotate(${i*33}) scale(${(0.3+i*0.08).toFixed(2)})">${kfSprig(a1,a2,bg,i)}</g>`;
+    }).join("");
   }
-  return `<div class="kbach-frame-fixed" aria-hidden="true">${html}</div>`;
+
+  const uri = kfWatermarkTileUri(inner, w, h);
+  return `<div class="kbach-watermark" style="background-image:url('${uri}');background-size:${w}px ${h}px;--kf-dx:${dx}px;--kf-dy:${dy}px;--kf-dur:${dur}s;" aria-hidden="true"></div>`;
 }
 
 function renderInvitation(s){
