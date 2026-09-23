@@ -426,58 +426,80 @@ if(ocEl){
 // stretching, the way a real border pattern would. Colours are the theme's own hex values (not CSS
 // variables): a background-image data URI is a separate mini-document that can't see the page's CSS, so
 // the exact colour has to be baked in when the invitation is generated.
-const KF_LOTUS_PATH = "M0,0 C-5,-8 -5,-18 0,-26 C5,-18 5,-8 0,0 Z";
+// ---- Flower shapes: 5 species drawn as raw path data (no <use>, so each mini-SVG document works standalone) ----
+const KF_PETAL_PATH  = "M0,0 C-5,-8 -5,-18 0,-26 C5,-18 5,-8 0,0 Z";
 const KF_RPETAL_PATH = "M0,0 C-3,-10 -2,-24 0,-32 C2,-24 3,-10 0,0 Z";
+const KF_LEAF_PATH   = "M0,0 C10,-4 18,-14 14,-26 C4,-20 -4,-8 0,0 Z";
 
-function kfLotusGroup(a1, a2, bg){
-  return `<path d="${KF_LOTUS_PATH}" fill="${a1}"/>
-<path d="${KF_LOTUS_PATH}" fill="${a1}" opacity=".85" transform="rotate(35)"/>
-<path d="${KF_LOTUS_PATH}" fill="${a1}" opacity=".85" transform="rotate(-35)"/>
-<path d="${KF_LOTUS_PATH}" fill="${a2}" opacity=".7" transform="rotate(65)"/>
-<path d="${KF_LOTUS_PATH}" fill="${a2}" opacity=".7" transform="rotate(-65)"/>
-<circle cx="0" cy="-2" r="3" fill="${bg}" stroke="${a1}" stroke-width="1.2"/>`;
+function kfLotus(a1, bg){ // ផ្កាឈូក
+  return `<path d="${KF_PETAL_PATH}" fill="${a1}"/>
+<path d="${KF_PETAL_PATH}" fill="${a1}" opacity=".9" transform="rotate(35)"/>
+<path d="${KF_PETAL_PATH}" fill="${a1}" opacity=".9" transform="rotate(-35)"/>
+<path d="${KF_PETAL_PATH}" fill="${a1}" opacity=".75" transform="rotate(70)"/>
+<path d="${KF_PETAL_PATH}" fill="${a1}" opacity=".75" transform="rotate(-70)"/>
+<circle cx="0" cy="-2" r="2.6" fill="${bg}" stroke="${a1}" stroke-width="1"/>`;
 }
-function kfRomduolGroup(a1, a2){
-  return `<path d="${KF_RPETAL_PATH}" fill="${a2}"/>
-<path d="${KF_RPETAL_PATH}" fill="${a2}" transform="rotate(72)"/>
-<path d="${KF_RPETAL_PATH}" fill="${a2}" transform="rotate(144)"/>
-<path d="${KF_RPETAL_PATH}" fill="${a2}" transform="rotate(216)"/>
-<path d="${KF_RPETAL_PATH}" fill="${a2}" transform="rotate(288)"/>
-<circle cx="0" cy="0" r="3.2" fill="${a1}"/>`;
+function kfRomduol(a2, bg){ // ផ្ការំដួល
+  return [0,72,144,216,288].map(d => `<path d="${KF_RPETAL_PATH}" fill="${a2}" transform="rotate(${d})"/>`).join("")
+    + `<circle r="2.6" fill="${bg}"/>`;
 }
-function kfFlameGroup(a1, a2){
-  return `<path d="M0,0 C10,-4 14,4 26,2 C18,10 18,20 6,18 C12,10 2,6 0,0 Z" fill="${a1}"/>
-<path d="M0,0 C6,-2 4,10 0,0 Z" fill="${a2}"/>`;
+function kfChampa(a1, a2){ // ផ្កាចំប៉ី
+  return [0,70,140,210,280].map((d,i) => `<path d="${KF_PETAL_PATH}" fill="${a1}" opacity="${(1-i*0.08).toFixed(2)}" transform="rotate(${d}) scale(1.3,0.85)"/>`).join("")
+    + `<circle r="1.8" fill="${a2}"/>`;
 }
-function kfDiamondGroup(a1, a2){
-  return `<path d="M0,-6 L6,0 L0,6 L-6,0 Z" fill="${a1}"/><circle r="1.6" fill="${a2}"/>`;
+function kfReachpreuk(a1){ // ផ្ការាជព្រឹក្ស
+  return `<path d="M0,0 C2,10 2,20 0,30" fill="none" stroke="${a1}" stroke-width="1"/>
+<circle cx="0" cy="4" r="3" fill="${a1}"/>
+<circle cx="1.3" cy="12" r="2.5" fill="${a1}" opacity=".9"/>
+<circle cx="-1" cy="19" r="2.1" fill="${a1}" opacity=".8"/>
+<circle cx="1" cy="25" r="1.7" fill="${a1}" opacity=".7"/>
+<circle cx="0" cy="30" r="1.3" fill="${a1}" opacity=".6"/>`;
 }
-// Corner ornaments, drawn once in a 0..90 box; the same artwork is flipped by CSS for the other 3 corners.
-function kfCornerFull(a1, a2, bg){
-  return `<path d="M2,74 C2,36 2,2 74,2" fill="none" stroke="${a1}" stroke-width="2"/>
-<path d="M2,54 C2,30 30,2 54,2" fill="none" stroke="${a1}" stroke-width="1.2"/>
-<path d="M2,36 C2,22 22,2 36,2" fill="none" stroke="${a2}" stroke-width="1"/>
-<path d="M4,4 C16,-2 4,16 4,4 Z" fill="${a1}"/>
-<path d="M4,4 C26,0 30,14 46,10 C34,18 34,30 20,28 C26,18 14,14 4,4 Z" fill="${a1}" opacity=".9"/>
-<g transform="translate(22,22) scale(.9)">${kfLotusGroup(a1,a2,bg)}</g>
-<g transform="translate(46,46) rotate(20) scale(.55)">${kfRomduolGroup(a1,a2)}</g>
-<circle cx="74" cy="2" r="2.6" fill="${a2}"/><circle cx="2" cy="74" r="2.6" fill="${a2}"/>`;
+function kfKngork(a1){ // ផ្កាក្ងោក
+  return [0,35,-35,70,-70].map(d => `<path d="${KF_PETAL_PATH}" fill="${a1}" opacity=".85" transform="rotate(${d}) scale(1.05,1.5)"/>`).join("")
+    + `<line x1="0" y1="0" x2="3" y2="-32" stroke="${a1}" stroke-width=".8"/>
+<line x1="0" y1="0" x2="-3" y2="-30" stroke="${a1}" stroke-width=".8"/>
+<circle cx="3" cy="-32" r="1" fill="${a1}"/><circle cx="-3" cy="-30" r="1" fill="${a1}"/>`;
 }
-function kfCornerFlame(a1, a2){
-  return `<path d="M2,60 C2,28 2,2 60,2" fill="none" stroke="${a1}" stroke-width="2"/>
-<g transform="translate(6,6)">${kfFlameGroup(a1,a2)}</g>
-<g transform="translate(6,6) rotate(28) scale(.7)">${kfFlameGroup(a1,a2)}</g>
-<g transform="translate(6,6) rotate(-20) scale(.55)">${kfFlameGroup(a1,a2)}</g>`;
+function kfFlower(idx, a1, a2, bg){
+  const fns = [() => kfLotus(a1,bg), () => kfRomduol(a2,bg), () => kfChampa(a1,a2), () => kfReachpreuk(a1), () => kfKngork(a2)];
+  return fns[((idx % fns.length) + fns.length) % fns.length]();
 }
-function kfCornerMinimal(a1, a2, bg){
-  return `<path d="M2,26 C2,2 2,2 26,2" fill="none" stroke="${a1}" stroke-width="1.4"/>
-<g transform="translate(14,14) scale(.55)">${kfLotusGroup(a1,a2,bg)}</g>`;
+// A small ornament: a few leaves plus a main flower and a smaller accent flower
+function kfSprig(a1, a2, bg, seed){
+  const leaves = [-40,40,100,170].map((ang,i) =>
+    `<path d="${KF_LEAF_PATH}" fill="${a1}" opacity=".5" transform="rotate(${ang}) translate(0,${2+i*2}) scale(${(0.9+((seed+i)%3)*0.15).toFixed(2)})"/>`
+  ).join("");
+  return leaves
+    + `<g>${kfFlower(seed, a1, a2, bg)}</g>`
+    + `<g transform="translate(9,6) scale(.55) rotate(15)">${kfFlower(seed+2, a1, a2, bg)}</g>`;
 }
-function kfCornerRosette(a1, a2, bg){
-  return `<path d="M4,60 C4,26 4,4 60,4" fill="none" stroke="${a1}" stroke-width="1.4" stroke-dasharray="1 4"/>
-<g transform="translate(32,32)">${kfLotusGroup(a1,a2,bg)}</g>
-<g transform="translate(32,32) rotate(20) scale(.55)">${kfRomduolGroup(a1,a2)}</g>`;
+
+// ---- Corner ornaments (fixed 90x90 box; CSS flips the artwork for the other 3 corners) ----
+function kfCornerBranch(a1,a2,bg){ // មែកទ្រេត
+  return `<path d="M4,50 C4,26 26,4 50,4" fill="none" stroke="${a1}" stroke-width="1.4" opacity=".6"/>
+<g transform="translate(10,10) scale(1.1)">${kfSprig(a1,a2,bg,0)}</g>
+<g transform="translate(28,20) scale(.75) rotate(20)">${kfSprig(a1,a2,bg,2)}</g>
+<g transform="translate(44,34) scale(.5) rotate(-15)">${kfSprig(a1,a2,bg,4)}</g>`;
 }
+function kfCornerWrap(a1,a2,bg){ // ព័ទ្ធពេញ (corner accent)
+  return `<path d="M2,60 C2,26 26,2 60,2" fill="none" stroke="${a1}" stroke-width="1.2" opacity=".5"/>
+<g transform="translate(20,20) scale(.9)">${kfSprig(a1,a2,bg,1)}</g>`;
+}
+
+// ---- Edge tiles (repeat along the border; independent of screen size) ----
+function kfGarlandTile(a1,a2,bg){ // ព័ទ្ធពេញ/កម្រងក្រោម — horizontal wavy chain
+  return `<path d="M0,10 Q15,22 30,10" fill="none" stroke="${a1}" stroke-width="1.2" opacity=".55"/>
+<g transform="translate(15,14) scale(.55)">${kfSprig(a1,a2,bg,2)}</g>`;
+}
+function kfSideTile(a1,a2,bg){ // ព័ទ្ធពេញ/សងខាង — vertical winding vine
+  return `<path d="M15,0 C6,10 6,20 15,30 C24,40 24,50 15,60" fill="none" stroke="${a1}" stroke-width="1.3" opacity=".55"/>
+<g transform="translate(15,30) scale(.45)">${kfSprig(a1,a2,bg,1)}</g>`;
+}
+function kfScatterTile(a1,a2,bg,seed){ // កក្រាយសេរី — loose, off-center, low density
+  return `<g transform="translate(${10+seed*3},${14-seed*2}) scale(${(0.35+(seed%3)*0.1).toFixed(2)}) rotate(${seed*23})">${kfSprig(a1,a2,bg,seed)}</g>`;
+}
+
 function kfCornerSvg(inner){
   return `<svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
 }
@@ -485,40 +507,36 @@ function kfTileUri(inner, w, h){
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${inner}</svg>`;
   return "data:image/svg+xml," + encodeURIComponent(svg);
 }
+
 function buildKbachFrameOverlay(styleId, t){
   if(!styleId || styleId === "none" || !hasOwn(KBACH_FRAME_STYLES, styleId)) return "";
   const a1 = t.accent1, a2 = t.accent2, bg = t.bg;
   const corners = inner => ["tl","tr","bl","br"].map(pos =>
     `<div class="kbach-corner ${pos}" aria-hidden="true">${kfCornerSvg(inner)}</div>`).join("");
-  const edges = (inner, w, h, sides) => sides.map(side =>
-    `<div class="kbach-edge ${side}" style="background-image:url('${kfTileUri(inner, w, h)}');background-size:${w}px ${h}px;" aria-hidden="true"></div>`).join("");
+  const oneCorner = (pos, inner) =>
+    `<div class="kbach-corner ${pos}" aria-hidden="true">${kfCornerSvg(inner)}</div>`;
+  const edges = (inner, w, h, sides, full) => sides.map(side =>
+    `<div class="kbach-edge ${side}${full ? " full" : ""}" style="background-image:url('${kfTileUri(inner, w, h)}');background-size:${w}px ${h}px;" aria-hidden="true"></div>`).join("");
   const line = (inset, width, color) => `<div class="kbach-line" style="inset:${inset}px;border:${width}px solid ${color};" aria-hidden="true"></div>`;
 
   let html = "";
-  if(styleId === "mixed"){
+  if(styleId === "diagbranch"){
+    html += line(9, 1, a1);
+    html += corners(kfCornerBranch(a1,a2,bg));
+  } else if(styleId === "fullwrap"){
     html += line(9, 2, a1) + line(15, 1, a2);
-    html += corners(kfCornerFull(a1,a2,bg));
-    html += edges(`<g transform="translate(19,26)">${kfLotusGroup(a1,a2,bg)}</g>`, 38, 40, ["top","bottom"]);
-    html += edges(`<g transform="translate(19,26) rotate(90)">${kfLotusGroup(a1,a2,bg)}</g>`, 38, 40, ["left","right"]);
-  } else if(styleId === "flame"){
-    html += line(9, 2, a1) + line(14, 1, a2);
-    html += corners(kfCornerFlame(a1,a2));
-  } else if(styleId === "vine"){
-    html += line(11, 1, a1);
-    html += edges(`<path d="M15,0 C4,10 4,20 15,30 C26,40 26,50 15,60" fill="none" stroke="${a1}" stroke-width="1.6"/><g transform="translate(15,30) scale(.45)">${kfLotusGroup(a1,a2,bg)}</g>`, 30, 60, ["left","right"]);
-    html += corners(kfCornerMinimal(a1,a2,bg));
-  } else if(styleId === "minimal"){
-    html += line(11, 1, a1);
-    html += corners(kfCornerMinimal(a1,a2,bg));
-  } else if(styleId === "dense"){
-    html += line(9, 2, a1) + line(15, 1, a2);
-    html += corners(kfCornerFull(a1,a2,bg));
-    html += edges(`<g transform="translate(15,22) scale(.8)">${kfLotusGroup(a1,a2,bg)}</g><g transform="translate(30,24) scale(.6)">${kfRomduolGroup(a1,a2)}</g>`, 32, 30, ["top","bottom"]);
-    html += edges(`<g transform="translate(15,22) rotate(90) scale(.8)">${kfLotusGroup(a1,a2,bg)}</g>`, 32, 30, ["left","right"]);
-  } else if(styleId === "star"){
-    html += line(13, 1, a1);
-    html += corners(kfCornerRosette(a1,a2,bg));
-    html += edges(`<g transform="translate(15,15)">${kfDiamondGroup(a1,a2)}</g>`, 30, 30, ["top","bottom","left","right"]);
+    html += corners(kfCornerWrap(a1,a2,bg));
+    html += edges(kfGarlandTile(a1,a2,bg), 30, 30, ["top","bottom"]);
+    html += edges(kfSideTile(a1,a2,bg), 30, 60, ["left","right"]);
+  } else if(styleId === "onecorner"){
+    html += oneCorner("br", kfCornerBranch(a1,a2,bg));
+  } else if(styleId === "bottomgarland"){
+    html += edges(kfGarlandTile(a1,a2,bg), 30, 30, ["bottom"], true);
+  } else if(styleId === "sidebranch"){
+    html += edges(kfSideTile(a1,a2,bg), 30, 60, ["left","right"], true);
+  } else if(styleId === "scatter"){
+    html += edges(kfScatterTile(a1,a2,bg,0), 70, 70, ["top","bottom"], true);
+    html += edges(kfScatterTile(a1,a2,bg,1), 70, 70, ["left","right"], true);
   }
   return `<div class="kbach-frame-fixed" aria-hidden="true">${html}</div>`;
 }
