@@ -540,7 +540,8 @@ function renderInvitation(s){
 <style>
 :root{--bg:${t.bg};--ink:${t.ink};--accent-1:${t.accent1};--accent-2:${t.accent2};--card:${t.card};--border:${t.border};--radius:${t.radius};--display-font:${fk.display};--body-font:${fk.body};--display-font-en:${fe.display};--body-font-en:${fe.body};}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body-font);line-height:1.8;-webkit-font-smoothing:antialiased;}
+html{background:var(--bg);}
+body{margin:0;color:var(--ink);font-family:var(--body-font);line-height:1.8;-webkit-font-smoothing:antialiased;}
 .kbach-watermark{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.12;background-repeat:repeat;animation:kf-drift var(--kf-dur,55s) linear infinite;}
 @keyframes kf-drift{from{background-position:0 0;}to{background-position:var(--kf-dx,140px) var(--kf-dy,140px);}}
 @media(prefers-reduced-motion:reduce){.kbach-watermark{animation:none !important;}}
