@@ -708,24 +708,43 @@ function fxDrawPetal(p){
   fxCtx.translate(p.x,p.y);
   fxCtx.rotate(p.angle);
   fxCtx.globalAlpha=p.opacity;
+  var pr=p.r*0.6;
   fxCtx.fillStyle=fxColor1;
+  for(var i=0;i<5;i++){
+    fxCtx.save();
+    fxCtx.rotate((Math.PI*2/5)*i);
+    fxCtx.beginPath();
+    fxCtx.ellipse(0,-pr*0.85,pr*0.5,pr*0.9,0,0,Math.PI*2);
+    fxCtx.fill();
+    fxCtx.restore();
+  }
+  fxCtx.fillStyle=fxColor2;
   fxCtx.beginPath();
-  fxCtx.ellipse(0,0,p.r,p.r*0.6,0,0,Math.PI*2);
+  fxCtx.arc(0,0,pr*0.35,0,Math.PI*2);
   fxCtx.fill();
   fxCtx.restore();
 }
 function fxDrawSnow(p){
-  fxCtx.beginPath();
+  fxCtx.save();
   fxCtx.globalAlpha=p.opacity;
-  fxCtx.fillStyle="#ffffff";
-  fxCtx.arc(p.x,p.y,p.r,0,Math.PI*2);
+  var grad=fxCtx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*1.6);
+  grad.addColorStop(0,"rgba(255,255,255,1)");
+  grad.addColorStop(.55,"rgba(255,255,255,.8)");
+  grad.addColorStop(1,"rgba(255,255,255,0)");
+  fxCtx.fillStyle=grad;
+  fxCtx.beginPath();
+  fxCtx.arc(p.x,p.y,p.r*1.6,0,Math.PI*2);
   fxCtx.fill();
+  fxCtx.restore();
 }
 function fxDrawStar(p){
   fxCtx.save();
   fxCtx.translate(p.x,p.y);
   fxCtx.rotate(p.angle);
-  fxCtx.globalAlpha=p.opacity;
+  var twinkle=0.55+0.45*Math.sin((p.x+p.y)*0.02+p.angle*3);   // ភ្លឺ/ស្រអាប់ឆ្លាស់គ្នាតាមទីតាំង/ពេលវេលា
+  fxCtx.globalAlpha=p.opacity*twinkle;
+  fxCtx.shadowColor=fxColor2;
+  fxCtx.shadowBlur=p.r*2.5;
   fxCtx.fillStyle=fxColor2;
   var spikes=4, outer=p.r*2, inner=p.r*0.7;
   fxCtx.beginPath();
