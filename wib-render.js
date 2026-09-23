@@ -541,24 +541,9 @@ function renderInvitation(s){
 :root{--bg:${t.bg};--ink:${t.ink};--accent-1:${t.accent1};--accent-2:${t.accent2};--card:${t.card};--border:${t.border};--radius:${t.radius};--display-font:${fk.display};--body-font:${fk.body};--display-font-en:${fe.display};--body-font-en:${fe.body};}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body-font);line-height:1.8;-webkit-font-smoothing:antialiased;}
-.kbach-frame-fixed{position:fixed;inset:0;pointer-events:none;z-index:2;}
-.kbach-line{position:fixed;pointer-events:none;z-index:2;}
-.kbach-corner{position:fixed;width:74px;height:74px;pointer-events:none;z-index:2;}
-.kbach-corner svg{display:block;width:100%;height:100%;}
-.kbach-corner.tl{top:0;left:0;}
-.kbach-corner.tr{top:0;right:0;transform:scaleX(-1);}
-.kbach-corner.bl{bottom:0;left:0;transform:scaleY(-1);}
-.kbach-corner.br{bottom:0;right:0;transform:scale(-1,-1);}
-.kbach-edge{position:fixed;pointer-events:none;z-index:2;}
-.kbach-edge.top,.kbach-edge.bottom{left:74px;right:74px;height:28px;background-repeat:repeat-x;background-position:center;}
-.kbach-edge.top{top:0;}
-.kbach-edge.bottom{bottom:0;}
-.kbach-edge.left,.kbach-edge.right{top:74px;bottom:74px;width:28px;background-repeat:repeat-y;background-position:center;}
-.kbach-edge.left{left:0;}
-.kbach-edge.right{right:0;}
-.kbach-edge.top.full,.kbach-edge.bottom.full{left:0;right:0;}
-.kbach-edge.left.full,.kbach-edge.right.full{top:0;bottom:0;}
-@media(max-width:480px){.kbach-corner{width:52px;height:52px;}.kbach-edge.top,.kbach-edge.bottom{left:52px;right:52px;height:20px;}.kbach-edge.left,.kbach-edge.right{top:52px;bottom:52px;width:20px;}}
+.kbach-watermark{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.12;background-repeat:repeat;animation:kf-drift var(--kf-dur,55s) linear infinite;}
+@keyframes kf-drift{from{background-position:0 0;}to{background-position:var(--kf-dx,140px) var(--kf-dy,140px);}}
+@media(prefers-reduced-motion:reduce){.kbach-watermark{animation:none !important;}}
 .display{font-family:var(--display-font);color:var(--accent-1);}
 .lang-en{font-family:var(--body-font-en);font-style:italic;}
 .lang-en .display{font-family:var(--display-font-en);font-style:normal;}
