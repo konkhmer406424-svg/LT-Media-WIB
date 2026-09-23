@@ -173,12 +173,12 @@ const THEME_GALLERY_DEFAULTS = { gold:"grid", rose:"polaroid", minimal:"square",
 // separate colour picker is needed here.
 const KBACH_FRAME_STYLES = {
   none:{ label:"គ្មាន" },
-  mixed:{ label:"ផ្កាចម្រុះ" },
-  flame:{ label:"ក្បាច់ភ្លើង" },
-  vine:{ label:"ក្រវាត់ស្លឹក" },
-  minimal:{ label:"សាមញ្ញ" },
-  dense:{ label:"កម្រងផ្កាក្រាស់" },
-  star:{ label:"ចំណុចផ្កាយ" }
+  diagbranch:{ label:"មែកទ្រេត" },
+  fullwrap:{ label:"ព័ទ្ធពេញ" },
+  onecorner:{ label:"ជ្រុងតែមួយ" },
+  bottomgarland:{ label:"កម្រងក្រោម" },
+  sidebranch:{ label:"សងខាង" },
+  scatter:{ label:"ទីតាំងសេរី" }
 };
 
 const defaultState = {
