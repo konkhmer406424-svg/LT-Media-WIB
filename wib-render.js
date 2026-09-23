@@ -484,31 +484,35 @@ function kfWatermarkTileUri(inner, w, h){
 function buildKbachFrameOverlay(styleId, t){
   if(!styleId || styleId === "none" || !hasOwn(KBACH_FRAME_STYLES, styleId)) return "";
   const a1 = t.accent1, a2 = t.accent2, bg = t.bg;
-  let w = 140, h = 140, dx = 140, dy = 140, dur = 55, inner = "";
+  let w = 140, h = 140, dx = 140, dy = 140, dur = 55, inner = "", mode = "full";
 
-  if(styleId === "diagbranch"){          // ស្តើង — drift ដេក
+  if(styleId === "diagbranch"){
     w = h = 150; dx = 150; dy = 150; dur = 60;
+    mode = "diagonal";
     inner = `<g transform="translate(30,30) rotate(-15) scale(.7)">${kfSprig(a1,a2,bg,0)}</g>
 <g transform="translate(105,95) rotate(20) scale(.55)">${kfSprig(a1,a2,bg,3)}</g>`;
-  } else if(styleId === "fullwrap"){     // ក្រាស់ — mix ច្រើនប្រភេទ
+  } else if(styleId === "fullwrap"){
     w = h = 110; dx = 110; dy = 110; dur = 50;
     inner = `<g transform="translate(20,20) scale(.6)">${kfSprig(a1,a2,bg,1)}</g>
 <g transform="translate(75,35) rotate(40) scale(.45)">${kfSprig(a1,a2,bg,3)}</g>
 <g transform="translate(45,80) rotate(-25) scale(.5)">${kfSprig(a1,a2,bg,4)}</g>`;
-  } else if(styleId === "onecorner"){    // ស្តើងបំផុត — tile ធំ
+  } else if(styleId === "onecorner"){
     w = h = 220; dx = 220; dy = 220; dur = 75;
+    mode = "corner";
     inner = `<g transform="translate(40,50) rotate(10) scale(.6)">${kfSprig(a1,a2,bg,2)}</g>`;
-  } else if(styleId === "bottomgarland"){ // ហូរដេក
+  } else if(styleId === "bottomgarland"){
     w = 130; h = 60; dx = 130; dy = 0; dur = 40;
+    mode = "bottom";
     inner = `<path d="M0,30 Q32,46 65,30 T130,30" fill="none" stroke="${a1}" stroke-width="1" opacity=".5"/>
 <g transform="translate(20,30) scale(.5)">${kfSprig(a1,a2,bg,2)}</g>
 <g transform="translate(95,30) scale(.45) rotate(20)">${kfSprig(a1,a2,bg,4)}</g>`;
-  } else if(styleId === "sidebranch"){    // ហូរឈរ
+  } else if(styleId === "sidebranch"){
     w = 60; h = 130; dx = 0; dy = 130; dur = 40;
+    mode = "side";
     inner = `<path d="M30,0 Q46,32 30,65 T30,130" fill="none" stroke="${a1}" stroke-width="1" opacity=".5"/>
 <g transform="translate(30,20) scale(.5)">${kfSprig(a1,a2,bg,1)}</g>
 <g transform="translate(30,95) scale(.45) rotate(-20)">${kfSprig(a1,a2,bg,3)}</g>`;
-  } else if(styleId === "scatter"){       // កក្រាយសេរី — drift ដេក
+  } else if(styleId === "scatter"){
     w = h = 180; dx = 180; dy = 180; dur = 70;
     inner = [0,1,2].map(i => {
       const x = 20 + i*55, y = 30 + (i%2)*90;
@@ -517,9 +521,24 @@ function buildKbachFrameOverlay(styleId, t){
   }
 
   const uri = kfWatermarkTileUri(inner, w, h);
-  return `<div class="kbach-watermark" style="background-image:url('${uri}');background-size:${w}px ${h}px;--kf-dx:${dx}px;--kf-dy:${dy}px;--kf-dur:${dur}s;" aria-hidden="true"></div>`;
-}
+  const bgStyle = `background-image:url('${uri}');background-size:${w}px ${h}px;--kf-dx:${dx}px;--kf-dy:${dy}px;--kf-dur:${dur}s;`;
 
+  if(mode === "bottom"){
+    return `<div class="kbach-watermark kbach-watermark-bottom" style="${bgStyle}height:190px;" aria-hidden="true"></div>`;
+  }
+  if(mode === "side"){
+    return `<div class="kbach-watermark kbach-watermark-side-l" style="${bgStyle}width:140px;" aria-hidden="true"></div>`
+      + `<div class="kbach-watermark kbach-watermark-side-r" style="${bgStyle}width:140px;" aria-hidden="true"></div>`;
+  }
+  if(mode === "corner"){
+    return `<div class="kbach-watermark kbach-watermark-corner-br" style="${bgStyle}width:280px;height:280px;" aria-hidden="true"></div>`;
+  }
+  if(mode === "diagonal"){
+    return `<div class="kbach-watermark kbach-watermark-corner-tl" style="${bgStyle}width:320px;height:320px;" aria-hidden="true"></div>`
+      + `<div class="kbach-watermark kbach-watermark-corner-br" style="${bgStyle}width:320px;height:320px;" aria-hidden="true"></div>`;
+  }
+  return `<div class="kbach-watermark kbach-watermark-full" style="${bgStyle}" aria-hidden="true"></div>`;
+}
 function renderInvitation(s){
   const t = THEMES[s.theme];
   const fk = FONT_KM[hasOwn(FONT_KM, s.fontKm) ? s.fontKm : (THEME_FONT_DEFAULTS[s.theme] || THEME_FONT_DEFAULTS.gold)[0]];
@@ -542,7 +561,13 @@ function renderInvitation(s){
 *{box-sizing:border-box}
 html{background:var(--bg);}
 body{margin:0;color:var(--ink);font-family:var(--body-font);line-height:1.8;-webkit-font-smoothing:antialiased;}
-.kbach-watermark{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.12;background-repeat:repeat;animation:kf-drift var(--kf-dur,55s) linear infinite;}
+.kbach-watermark{position:fixed;pointer-events:none;opacity:.12;background-repeat:repeat;animation:kf-drift var(--kf-dur,55s) linear infinite;}
+.kbach-watermark-full{inset:0;}
+.kbach-watermark-bottom{left:0;right:0;bottom:0;-webkit-mask-image:linear-gradient(to top,#000 0%,#000 35%,transparent 100%);mask-image:linear-gradient(to top,#000 0%,#000 35%,transparent 100%);}
+.kbach-watermark-side-l{top:0;bottom:0;left:0;-webkit-mask-image:linear-gradient(to right,#000 0%,#000 35%,transparent 100%);mask-image:linear-gradient(to right,#000 0%,#000 35%,transparent 100%);}
+.kbach-watermark-side-r{top:0;bottom:0;right:0;-webkit-mask-image:linear-gradient(to left,#000 0%,#000 35%,transparent 100%);mask-image:linear-gradient(to left,#000 0%,#000 35%,transparent 100%);}
+.kbach-watermark-corner-tl{top:0;left:0;-webkit-mask-image:radial-gradient(circle at 0% 0%,#000 0%,#000 45%,transparent 100%);mask-image:radial-gradient(circle at 0% 0%,#000 0%,#000 45%,transparent 100%);}
+.kbach-watermark-corner-br{bottom:0;right:0;-webkit-mask-image:radial-gradient(circle at 100% 100%,#000 0%,#000 45%,transparent 100%);mask-image:radial-gradient(circle at 100% 100%,#000 0%,#000 45%,transparent 100%);}
 @keyframes kf-drift{from{background-position:0 0;}to{background-position:var(--kf-dx,140px) var(--kf-dy,140px);}}
 @media(prefers-reduced-motion:reduce){.kbach-watermark{animation:none !important;}}
 .display{font-family:var(--display-font);color:var(--accent-1);}
